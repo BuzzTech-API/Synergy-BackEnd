@@ -10,6 +10,7 @@ import { Guests } from './entity/guests.entity';
 import { Reservations } from './entity/reservations.entity';
 import { Reserved } from './entity/reserved.entity';
 import { VirtualRoom } from './entity/virtualroom.entity';
+import { UsersModule } from './users/users.module';
 
 
 @Module({
@@ -25,6 +26,7 @@ import { VirtualRoom } from './entity/virtualroom.entity';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
