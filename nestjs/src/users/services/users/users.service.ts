@@ -12,6 +12,15 @@ export class UsersService {
     // metodos aqui
     // Ex:  getUsers(): User[] { return this.users; }
 
+    async createUser(userDetails: CreateUserParams) { //função para criar um usuario no banco de dados (cadastro)
+        const existingUser = await this.userRepository.findOne({ where: { user_email: userDetails.user_email } });
+        if (existingUser) {
+            throw new Error('Email ja cadastrado'); //caso o email exista ele joga um erro com a mensagem. (precisa ter um catch na rota para a aplicação não cair)
+        } else {
+            return this.userRepository.save(this.userRepository.create(userDetails));
+        }
+    }
+
     async create_admin() {
         const existingUser = await this.userRepository.findOne({ where: { user_email: 'adm@adm' } })
         if (!existingUser) {
@@ -24,7 +33,7 @@ export class UsersService {
             })
             return this.userRepository.save(newAdmin)
         }
-        throw new Error("Usuário já existe!")
+        return console.log("Usuário administrador já existe!")
     }
 
 }
