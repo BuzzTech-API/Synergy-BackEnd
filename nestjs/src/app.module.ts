@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entity/user.entity';
-import { PhysicalRoom } from './entity/physicalroom.enity';
-import { Integrantes } from './entity/integrantes.entity';
-import { Meetings } from './entity/meetings.entity';
-import { Guests } from './entity/guests.entity';
-import { Reservations } from './entity/reservations.entity';
-import { Reserved } from './entity/reserved.entity';
-import { VirtualRoom } from './entity/virtualroom.entity';
-import { UsersModule } from './users/users.module';
-import { VirtualroomsModule } from './virtualrooms/virtualrooms.module';
+import { User } from './entities/user.entity';
+import { PhysicalRoom } from './entities/physicalroom.enity';
+import { Integrantes } from './entities/integrantes.entity';
+import { Meetings } from './entities/meetings.entity';
+import { Guests } from './entities/guests.entity';
+import { Reservations } from './entities/reservations.entity';
+import { Reserved } from './entities/reserved.entity';
+import { VirtualRoom } from './entities/virtualroom.entity';
+import { UsersModule } from './models/users/users.module';
+import { VirtualroomsModule } from './models/virtualrooms/virtualrooms.module';
 
 
 @Module({
