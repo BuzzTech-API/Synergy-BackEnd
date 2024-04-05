@@ -12,6 +12,27 @@ export class UsersService {
     // metodos aqui
     // Ex:  getUsers(): User[] { return this.users; }
 
+    async getUserById(id: number){
+        const metadata = this.userRepository.metadata // pega as informações da entidade
+        const relations = metadata.relations.map(relation => relation.propertyName) // pega o nome de todas as relações
+        const user = await this.userRepository.findOne({ 
+            where: { user_id: id },
+            relations: relations,
+        })
+        if(!user){
+            throw new Error('Usuário não existe')
+        } 
+        return user
+    }
+
+    async getUsers() {
+        const users = await this.userRepository.find()
+        if(!users){
+            throw new Error('Erro ao pegar os usuários')
+        }
+        return users
+    }
+
     async createUser(userDetails: CreateUserParams) { //função para criar um usuario no banco de dados (cadastro)
         const existingUser = await this.userRepository.findOne({ where: { user_email: userDetails.user_email } });
         if (existingUser) {
@@ -33,7 +54,6 @@ export class UsersService {
             })
             return this.userRepository.save(newAdmin)
         }
-        return console.log("Usuário administrador já existe!")
     }
 
 }
