@@ -11,6 +11,7 @@ import { Reservations } from './entity/reservations.entity';
 import { Reserved } from './entity/reserved.entity';
 import { VirtualRoom } from './entity/virtualroom.entity';
 import { UsersModule } from './users/users.module';
+import { VirtualroomsModule } from './virtualrooms/virtualrooms.module';
 
 
 @Module({
@@ -27,6 +28,7 @@ import { UsersModule } from './users/users.module';
       autoLoadEntities: true,
     }),
     UsersModule,
+    VirtualroomsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

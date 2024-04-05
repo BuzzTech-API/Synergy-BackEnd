@@ -5,7 +5,7 @@ import { VirtualRoom } from './virtualroom.entity';
 
 @Entity({ name: 'Reservadas' })
 export class Reserved {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn() // primary key necesseária por limitação da biblioteca
     id: number;
 
     @ManyToOne(() => Reservations, reservation => reservation.reserved)
