@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './user.entity';
+import { Users } from './users.entity';
 import { Meetings } from './meetings.entity';
-import { Reserved } from './reserved.entity';
+import { Reserveds } from './reserveds.entity';
 
 @Entity({ name: 'Reservas' })
 export class Reservations {
@@ -17,14 +17,14 @@ export class Reservations {
   @Column({ type: "timestamp" })
   reserve_end: Date;
 
-  @OneToOne(() => User, user => user.user_id)
+  @OneToOne(() => Users, user => user.user_id)
   @JoinColumn({ name: "fk_Usuarios_user_id" })
-  user: User
+  user: Users
 
   @OneToOne(() => Meetings, meetings => meetings.meeting_id)
   @JoinColumn({ name: "fk_Reunioes_meeting_id" })
   meeting: Meetings
 
-  @OneToOne(() => Reserved, reserved => reserved.reservation)
-  reserved: Reserved[];
+  @OneToOne(() => Reserveds, reserveds => reserveds.reservation)
+  reserved: Reserveds[];
 }

@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { VirtualRoom } from 'src/entities/virtualroom.entity';
+import { VirtualRooms } from 'src/entities/virtualrooms.entity';
 import { CreateVirtualRoomParams } from 'src/common/utils/types';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class VirtualroomsService {
     constructor(
-        @InjectRepository(VirtualRoom) private virtualroomRepository: Repository<VirtualRoom>,
+        @InjectRepository(VirtualRooms) private virtualroomRepository: Repository<VirtualRooms>,
     ) { }
 
     async createVirtualRoom(vroomDetails: CreateVirtualRoomParams) { //função para criar uma sala virtual no banco de dados (cadastro)

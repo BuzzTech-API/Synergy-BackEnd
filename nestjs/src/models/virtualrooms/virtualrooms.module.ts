@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { VirtualroomsController } from './controller/virtualrooms/virtualrooms.controller';
 import { VirtualroomsService } from './service/virtualrooms/virtualrooms.service';
-import { VirtualRoom } from 'src/entities/virtualroom.entity';
+import { VirtualRooms } from 'src/entities/virtualrooms.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([VirtualRoom])],
+  imports: [TypeOrmModule.forFeature([VirtualRooms])],
   controllers: [VirtualroomsController],
   providers: [VirtualroomsService]
 })

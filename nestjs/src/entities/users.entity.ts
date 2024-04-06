@@ -1,10 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
-import { PhysicalRoom } from './physicalroom.enity';
-import { Integrantes } from './integrantes.entity';
+import { PhysicalRooms } from './physicalrooms.enity';
+import { Members } from './members.entity';
 import { Reservations } from './reservations.entity';
 
 @Entity({ name: 'Usuarios' })
-export class User {
+export class Users {
   @PrimaryGeneratedColumn({ type: "int" })
   user_id: number;
 
@@ -26,12 +26,12 @@ export class User {
   @Column({ default: true })
   is_active: boolean;
 
-  @OneToMany(() => PhysicalRoom, physicalRoom => physicalRoom.fk_Usuarios)
-  physicalRoom: PhysicalRoom;
+  @OneToMany(() => PhysicalRooms, physicalRooms => physicalRooms.fk_Usuarios)
+  physicalRoom: PhysicalRooms;
 
   @OneToMany(() => Reservations, reservations => reservations.user)
   reservations: Reservations;
 
-  @OneToOne(() => Integrantes, integrantes => integrantes.user)
-  integrante: Integrantes[];
+  @OneToOne(() => Members, members => members.user)
+  integrante: Members[];
 }
