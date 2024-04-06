@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './user.entity';
-import { Reserved } from './reserved.entity';
+import { Users } from './users.entity';
+import { Reserveds } from './reserveds.entity';
 
 @Entity({ name: 'Salas Fisicas' })
-export class PhysicalRoom {
+export class PhysicalRooms {
   @PrimaryGeneratedColumn({ type: "int" })
   room_id: number;
   
@@ -19,10 +19,10 @@ export class PhysicalRoom {
   @Column({ default: true })
   is_active: boolean;
 
-  @OneToOne((type) => User)
+  @OneToOne((type) => Users)
   @JoinColumn({ name: 'fk_Usuarios_user_id' })
-  fk_Usuarios: User;
+  fk_Usuarios: Users;
 
-  @OneToOne(() => Reserved, reserved => reserved.physicalRoom)
-  reserved: Reserved;
+  @OneToOne(() => Reserveds, reserveds => reserveds.physicalRooms)
+  reserved: Reserveds;
 }

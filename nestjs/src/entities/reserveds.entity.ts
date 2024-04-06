@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Reservations } from './reservations.entity';
-import { PhysicalRoom } from './physicalroom.enity';
-import { VirtualRoom } from './virtualroom.entity';
+import { PhysicalRooms } from './physicalrooms.enity';
+import { VirtualRooms } from './virtualrooms.entity';
 
 @Entity({ name: 'Reservadas' })
-export class Reserved {
+export class Reserveds {
     @PrimaryGeneratedColumn() // primary key necesseária por limitação da biblioteca
     id: number;
 
@@ -12,11 +12,11 @@ export class Reserved {
     @JoinColumn({ name: 'fk_Reservas_reserve_id' })
     reservation: Reservations;
 
-    @OneToOne(() => PhysicalRoom, physicalRoom => physicalRoom.reserved)
+    @OneToOne(() => PhysicalRooms, physicalRooms => physicalRooms.reserved)
     @JoinColumn({ name: 'fk_Salas_Fisicas_room_id' })
-    physicalRoom: PhysicalRoom;
+    physicalRooms: PhysicalRooms;
 
-    @OneToOne(() => VirtualRoom, virtualRoom => virtualRoom.reserved)
+    @OneToOne(() => VirtualRooms, virtualRooms => virtualRooms.reserved)
     @JoinColumn({ name: 'fk_Salas_Virtuais_virtual_room_id' })
-    virtualRoom: VirtualRoom;
+    virtualRoom: VirtualRooms;
 }

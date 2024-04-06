@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
-import { Integrantes } from './integrantes.entity';
+import { Members } from './members.entity';
 import { Reservations } from './reservations.entity';
 
 @Entity({ name: 'Reunioes' })
@@ -22,8 +22,8 @@ export class Meetings {
   @Column({ type: "varchar", length: 60 })
   meeting_type: string;
 
-  @OneToOne(() => Integrantes, integrantes => integrantes.meetings)
-  integrante: Integrantes[];
+  @OneToOne(() => Members, members => members.meetings)
+  integrante: Members[];
 
   @OneToMany(() => Reservations, reservations => reservations.meeting)
   reservations: Reservations;
