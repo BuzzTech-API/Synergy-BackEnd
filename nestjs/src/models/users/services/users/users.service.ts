@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
+import { Users } from 'src/entities/users.entity';
 import { CreateUserParams } from 'src/common/utils/types';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectRepository(User) private userRepository: Repository<User>,
+        @InjectRepository(Users) private userRepository: Repository<Users>,
     ) { }
     // metodos aqui
     // Ex:  getUsers(): User[] { return this.users; }
@@ -18,6 +18,16 @@ export class UsersService {
         const user = await this.userRepository.findOne({ 
             where: { user_id: id },
             relations: relations,
+        })
+        if(!user){
+            throw new Error('Usuário não existe')
+        } 
+        return user
+    }
+
+    async getUserByEmail(email: string){
+        const user = await this.userRepository.findOne({ 
+            where: { user_email: email }
         })
         if(!user){
             throw new Error('Usuário não existe')

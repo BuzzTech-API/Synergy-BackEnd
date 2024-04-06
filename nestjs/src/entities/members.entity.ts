@@ -1,10 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { Users } from './users.entity';
 import { Meetings } from './meetings.entity';
 import { Guests } from './guests.entity';
 
 @Entity({ name: 'Integrantes' })
-export class Integrantes {
+export class Members {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -16,9 +16,9 @@ export class Integrantes {
 
     // relações -------------------------------------------------
 
-    @ManyToOne(() => User, user => user.integrante)
+    @ManyToOne(() => Users, user => user.integrante)
     @JoinColumn({ name: 'fk_Usuarios_user_id' })
-    user: User;
+    user: Users;
 
     @ManyToOne(() => Meetings, meetings => meetings.integrante)
     @JoinColumn({ name: 'fk_Reunioes_meeting_id' })
