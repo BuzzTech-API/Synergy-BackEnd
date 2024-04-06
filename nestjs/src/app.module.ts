@@ -2,16 +2,19 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { PhysicalRoom } from './entities/physicalroom.enity';
-import { Integrantes } from './entities/integrantes.entity';
+import { Users } from './entities/users.entity';
+import { PhysicalRooms } from './entities/physicalrooms.enity';
+import { Members } from './entities/members.entity';
 import { Meetings } from './entities/meetings.entity';
 import { Guests } from './entities/guests.entity';
 import { Reservations } from './entities/reservations.entity';
-import { Reserved } from './entities/reserved.entity';
-import { VirtualRoom } from './entities/virtualroom.entity';
+import { Reserveds } from './entities/reserveds.entity';
+import { VirtualRooms } from './entities/virtualrooms.entity';
 import { UsersModule } from './models/users/users.module';
 import { VirtualroomsModule } from './models/virtualrooms/virtualrooms.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 
 @Module({
@@ -23,14 +26,18 @@ import { VirtualroomsModule } from './models/virtualrooms/virtualrooms.module';
       username: 'Syatt',
       password: 'Senha123#',
       database: 'api',
-      entities: [User, PhysicalRoom, Integrantes, Meetings, Guests, Reservations, Reserved, VirtualRoom],
+      entities: [Users, PhysicalRooms, Members, Meetings, Guests, Reservations, Reserveds, VirtualRooms],
       synchronize: true,
       autoLoadEntities: true,
     }),
     UsersModule,
     VirtualroomsModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_INTERCEPTOR,
+    useClass: AuthInterceptor,
+  }],
 })
 export class AppModule {}
