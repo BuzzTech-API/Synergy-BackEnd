@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
-import { Members } from './members.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Participate } from './participate.entity';
 import { Reservations } from './reservations.entity';
 
 @Entity({ name: 'Reunioes' })
@@ -13,7 +13,7 @@ export class Meetings {
   @Column({ type: "timestamp" })
   meeting_time: Date;
 
-  @Column({ type: "char" })
+  @Column({ type: "char", length: 80 })
   meeting_title: string;
 
   @Column({ type: "text" })
@@ -22,9 +22,10 @@ export class Meetings {
   @Column({ type: "varchar", length: 60 })
   meeting_type: string;
 
-  @OneToOne(() => Members, members => members.meetings)
-  integrante: Members[];
+  @OneToMany(() => Participate, participate => participate.meetings)
+  participate: Participate[]
 
-  @OneToMany(() => Reservations, reservations => reservations.meeting)
-  reservations: Reservations;
+  @OneToOne(() => Reservations, reservations => reservations.meeting)
+  @JoinColumn({ name: "reserve_id"})
+  reservations: Reservations
 }

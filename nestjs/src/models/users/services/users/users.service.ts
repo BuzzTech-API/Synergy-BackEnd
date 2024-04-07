@@ -53,12 +53,12 @@ export class UsersService {
     }
 
     async create_admin() {
-        const existingUser = await this.userRepository.findOne({ where: { user_email: 'adm@adm' } })
+        const existingUser = await this.userRepository.findOne({ where: { user_email: 'adm@adm.com' } })
         if (!existingUser) {
             const newAdmin: CreateUserParams = this.userRepository.create({
                 user_name: "Admin",
-                user_password: "Admin",
-                user_email: "adm@adm",
+                user_password: "admin",
+                user_email: "adm@adm.com",
                 user_permission_level: 10,
                 user_board: "Administrador",
             })

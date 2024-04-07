@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Users } from './users.entity';
 import { Meetings } from './meetings.entity';
-import { Reserveds } from './reserveds.entity';
+import { VirtualRooms } from './virtualrooms.entity';
+import { PhysicalRooms } from './physicalrooms.enity';
 
 @Entity({ name: 'Reservas' })
 export class Reservations {
@@ -17,14 +18,19 @@ export class Reservations {
   @Column({ type: "timestamp" })
   reserve_end: Date;
 
-  @OneToOne(() => Users, user => user.user_id)
-  @JoinColumn({ name: "fk_Usuarios_user_id" })
+  @ManyToOne(() => Users, user => user.reservations)
+  @JoinColumn({ name: "user_id" })
   user: Users
 
   @OneToOne(() => Meetings, meetings => meetings.meeting_id)
-  @JoinColumn({ name: "fk_Reunioes_meeting_id" })
+  @JoinColumn({ name: "meeting_id" })
   meeting: Meetings
 
-  @OneToOne(() => Reserveds, reserveds => reserveds.reservation)
-  reserved: Reserveds[];
+  @ManyToOne(() => VirtualRooms, vroom => vroom.reservation)
+  @JoinColumn({ name: "virtual_room_id" })
+  virtualroom: VirtualRooms
+
+  @ManyToOne(() => PhysicalRooms, proom => proom.reservation)
+  @JoinColumn({ name: "physical_room_id" })
+  physicalroom: PhysicalRooms
 }

@@ -1,28 +1,28 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToMany, OneToOne, ManyToOne } from 'typeorm';
 import { Users } from './users.entity';
-import { Reserveds } from './reserveds.entity';
+import { Reservations } from './reservations.entity';
 
 @Entity({ name: 'Salas Fisicas' })
 export class PhysicalRooms {
   @PrimaryGeneratedColumn({ type: "int" })
-  room_id: number;
+  physical_room_id: number;
   
   @Column({ type: "varchar", length: 80 })
-  room_name: string;
+  physical_room_name: string;
 
   @Column({ type: "int" })
-  room_permission_level: number;
+  physical_room_permission_level: number;
 
   @Column({ type: "int" })
-  room_vacancies: string;
+  physical_room_vacancies: number;
 
   @Column({ default: true })
   is_active: boolean;
 
-  @OneToOne((type) => Users)
-  @JoinColumn({ name: 'fk_Usuarios_user_id' })
-  fk_Usuarios: Users;
+  @ManyToOne(() => Users, user => user.physicalRoom)
+  @JoinColumn({ name: "user_id" })
+  user: Users
 
-  @OneToOne(() => Reserveds, reserveds => reserveds.physicalRooms)
-  reserved: Reserveds;
+  @OneToMany(() => Reservations, reservation => reservation.physicalroom)
+  reservation: Reservations
 }
