@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, OneToOne } from 'typeorm';
 import { PhysicalRooms } from './physicalrooms.enity';
-import { Members } from './members.entity';
 import { Reservations } from './reservations.entity';
+import { Participate } from './participate.entity';
 
 @Entity({ name: 'Usuarios' })
 export class Users {
@@ -17,7 +17,7 @@ export class Users {
   @Column({ type: "varchar", length: 80 })
   user_board: string;
 
-  @Column({ type: "varchar", length: 254 })
+  @Column({ type: "varchar", length: 150 })
   user_name: string;
 
   @Column({ type: "char", length: 80 })
@@ -26,12 +26,12 @@ export class Users {
   @Column({ default: true })
   is_active: boolean;
 
-  @OneToMany(() => PhysicalRooms, physicalRooms => physicalRooms.fk_Usuarios)
+  @OneToOne(() => PhysicalRooms, physicalRooms => physicalRooms.user)
   physicalRoom: PhysicalRooms;
 
-  @OneToMany(() => Reservations, reservations => reservations.user)
+  @OneToOne(() => Reservations, reservations => reservations.user)
   reservations: Reservations;
 
-  @OneToOne(() => Members, members => members.user)
-  integrante: Members[];
+  @OneToMany(() => Participate, participate => participate.user)
+  participate: Participate;
 }

@@ -1,6 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { Users } from './users.entity';
-import { Reserveds } from './reserveds.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Reservations } from './reservations.entity';
 
 @Entity({ name: 'Salas Virtuais' })
 export class VirtualRooms {
@@ -18,11 +17,8 @@ export class VirtualRooms {
 
   @Column({ type: "int" })
   virtual_room_permission_level: number;
-  
-  @OneToOne((type) => Users)
-  @JoinColumn({ name: 'fk_Usuarios_user_id' })
-  fk_Usuarios: Users;
 
-  @OneToOne(() => Reserveds, reserveds => reserveds.virtualRoom)
-  reserved: Reserveds;
+  @OneToMany(() => Reservations, reservation => reservation.virtualroom)
+  reservation: Reservations
+
 }
