@@ -13,8 +13,8 @@ export class ReservationsController {
   return reservations  
   }
 
-  @Post()
+  @Post('/physicalroom')
   createReservation(@Body() createReservationsDto: CreateReservationsDto) {
-    return this.reservationsService.createReservation(createReservationsDto);
+    return this.reservationsService.createPhysicalRoomReservation(createReservationsDto);
   }
 }

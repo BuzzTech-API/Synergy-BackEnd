@@ -1,5 +1,4 @@
 import { Meetings } from "src/entities/meetings.entity"
-import { User } from "src/entities/user.entity"
 
 export class CreateUserParams { // Modelo de dados final que vai ser enviado para o banco de dados
     user_name: string
@@ -16,7 +15,7 @@ export class CreateVirtualRoomParams {
 }
 
 export type CreateReservationsParams = {
-    reserve_start: Date;
-    reserve_end: Date;
-    user_id: number
+    reserve_start: Date
+    reserve_end: Date
+    physical_room_id: number
 }
