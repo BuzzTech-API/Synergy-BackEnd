@@ -8,7 +8,7 @@ export class VirtualroomsController {
 
     @Post()
     @Header('Content-Type', 'application/json')
-    async createUser(@Body() createVirtualRoomDto: CreateVirtualRoomDto) {
+    async createVirtualRoom(@Body() createVirtualRoomDto: CreateVirtualRoomDto) {
         try {
             const newVirtualRoom = await this.virtualRoomService.createVirtualRoom(createVirtualRoomDto);
             return newVirtualRoom

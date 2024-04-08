@@ -15,11 +15,11 @@ export class ReservationsService {
     return this.reservationsRepository.find()
   }
 
-  createReservation(reservationsDetails: CreateReservationsParams) {
+  createPhysicalRoomReservation(reservationsDetails: CreateReservationsParams) {
     const newReservations = this.reservationsRepository.create({
       ...reservationsDetails,
       reserve_date: new Date(),
-    });
-    return this.reservationsRepository.save(newReservations);
+    })
+    return this.reservationsRepository.save(newReservations)
   }
 }

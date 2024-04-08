@@ -29,8 +29,8 @@ export class Users {
   @OneToOne(() => PhysicalRooms, physicalRooms => physicalRooms.user)
   physicalRoom: PhysicalRooms;
 
-  @OneToOne(() => Reservations, reservations => reservations.user)
-  reservations: Reservations;
+  @OneToMany(() => Reservations, reservations => reservations.user)
+  reservations: Reservations[];
 
   @OneToMany(() => Participate, participate => participate.user)
   participate: Participate;
