@@ -2,11 +2,13 @@ import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/auth/guard/local-auth.guard';
 import { AuthService } from 'src/auth/service/auth/auth.service';
+import { Public } from 'src/common/utils/constants';
 
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) { }
 
+    @Public()//Use para quando existir alguma rota que não precise de login ou caso queira testar a rota sem precisar do login
     @UseGuards(LocalAuthGuard) // rota para efetuar login, protegida pelo LocalAuthGuard (verifica se o email e senha batem com o banco)
     @Post('/login')
     async login(@Request() req) {
