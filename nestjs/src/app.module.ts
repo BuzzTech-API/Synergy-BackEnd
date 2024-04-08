@@ -11,6 +11,7 @@ import { Reservations } from './entities/reservations.entity';
 import { VirtualRooms } from './entities/virtualrooms.entity';
 import { UsersModule } from './models/users/users.module';
 import { VirtualroomsModule } from './models/virtualrooms/virtualrooms.module';
+import { ReservationsModule } from './models/reservations/reservations.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthInterceptor } from './auth/auth.interceptor';
@@ -32,6 +33,7 @@ import { Presence } from './entities/presence.entity';
     }),
     UsersModule,
     VirtualroomsModule,
+    ReservationsModule,
     AuthModule,
   ],
   controllers: [AppController],
