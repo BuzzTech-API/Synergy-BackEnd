@@ -19,10 +19,6 @@ export class PhysicalRooms {
   @Column({ default: true })
   is_active: boolean;
 
-  @ManyToOne(() => Users, user => user.physicalRoom)
-  @JoinColumn({ name: "user_id" })
-  user: Users
-
   @OneToMany(() => Reservations, reservation => reservation.physicalroom)
-  reservation: Reservations
+  reservation: Reservations[]
 }

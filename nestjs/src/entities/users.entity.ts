@@ -26,9 +26,6 @@ export class Users {
   @Column({ default: true })
   is_active: boolean;
 
-  @OneToOne(() => PhysicalRooms, physicalRooms => physicalRooms.user)
-  physicalRoom: PhysicalRooms;
-
   @OneToMany(() => Reservations, reservations => reservations.user)
   reservations: Reservations[];
 

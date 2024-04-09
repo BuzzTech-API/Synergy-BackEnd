@@ -1,7 +1,10 @@
 import { IsDateString, IsISO8601, IsNotEmpty, Min } from "class-validator";
 
 export class CreateReservationsDto {
-    //reserve_date valor vai ser padrão (data de criação)
+    @IsNotEmpty()
+    @IsDateString()
+    @IsISO8601()
+    reserve_date: Date
 
     @IsNotEmpty()
     @IsDateString()//valida se é uma data
