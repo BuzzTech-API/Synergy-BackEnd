@@ -19,3 +19,9 @@ export type CreateReservationsParams = {
     reserve_end: Date
     physical_room_id: number
 }
+
+export class CreatePhysicalroomParams {
+    virtual_room_name: string
+    physical_room_vacancies: number
+    virtual_room_permission_level: number
+}

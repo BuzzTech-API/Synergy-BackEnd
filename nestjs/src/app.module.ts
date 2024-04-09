@@ -16,25 +16,28 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { Presence } from './entities/presence.entity';
+import { PhysicalroomsModule } from './models/physicalrooms/physicalrooms.module';
 
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
+      // host: 'localhost', //Pra quem n roda o docker
       host: 'db',
       port: 3306,
       username: 'Syatt',
       password: 'Senha123#',
       database: 'api',
       entities: [Users, PhysicalRooms, Participate, Meetings, Guests, Reservations, VirtualRooms, Presence],
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
     }),
     UsersModule,
     VirtualroomsModule,
     ReservationsModule,
     AuthModule,
+    PhysicalroomsModule
   ],
   controllers: [AppController],
   providers: [AppService, {
