@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
 import { Participate } from './participate.entity';
 import { Reservations } from './reservations.entity';
 
@@ -6,12 +6,6 @@ import { Reservations } from './reservations.entity';
 export class Meetings {
   @PrimaryGeneratedColumn({ type: "int" })
   meeting_id: number;
-  
-  @Column({ type: "timestamp" })
-  meeting_date: Date;
-
-  @Column({ type: "timestamp" })
-  meeting_time: Date;
 
   @Column({ type: "char", length: 80 })
   meeting_title: string;
@@ -25,7 +19,7 @@ export class Meetings {
   @OneToMany(() => Participate, participate => participate.meetings)
   participate: Participate[]
 
-  @OneToOne(() => Reservations, reservations => reservations.meeting)
+  @ManyToOne(() => Reservations, reservations => reservations.meeting)
   @JoinColumn({ name: "reserve_id"})
   reservations: Reservations
 }

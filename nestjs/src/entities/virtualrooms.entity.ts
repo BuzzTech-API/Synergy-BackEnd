@@ -19,6 +19,6 @@ export class VirtualRooms {
   virtual_room_permission_level: number;
 
   @OneToMany(() => Reservations, reservation => reservation.virtualroom)
-  reservation: Reservations
+  reservation: Reservations[]
 
 }
