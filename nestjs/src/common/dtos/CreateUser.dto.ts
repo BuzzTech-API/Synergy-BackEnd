@@ -4,7 +4,6 @@ export class CreateUserDto { // Modelo para os dados que chegam das rotas
     
     @IsNotEmpty()//verifica se é vazio
     @IsString()//verifica se é string(se não for não aceita)
-    @IsAlpha()//verifica se tem apenas letras (a-zA-Z)
     @MaxLength(254)//tamanho maximo da string
     user_name: string
 
