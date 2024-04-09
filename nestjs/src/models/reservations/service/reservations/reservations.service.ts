@@ -16,10 +16,7 @@ export class ReservationsService {
   }
 
   createPhysicalRoomReservation(reservationsDetails: CreateReservationsParams) {
-    const newReservations = this.reservationsRepository.create({
-      ...reservationsDetails,
-      reserve_date: new Date(),
-    })
+    const newReservations = this.reservationsRepository.create(reservationsDetails)
     return this.reservationsRepository.save(newReservations)
   }
 }
