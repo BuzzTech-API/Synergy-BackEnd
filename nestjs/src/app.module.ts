@@ -18,6 +18,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { Presence } from './entities/presence.entity';
 import { MeetingsModule } from './models/meetings/meetings.module';
 import { PhysicalroomsModule } from './models/physicalrooms/physicalrooms.module';
+import { GuestsModule } from './models/guests/guests.module';
 
 
 @Module({
@@ -39,6 +40,7 @@ import { PhysicalroomsModule } from './models/physicalrooms/physicalrooms.module
     AuthModule,
     MeetingsModule,
     PhysicalroomsModule,
+    GuestsModule,
   ],
   controllers: [AppController],
   providers: [AppService, {
