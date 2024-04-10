@@ -15,6 +15,8 @@ export class UsersService {
     async getUserById(id: number){
         const metadata = this.userRepository.metadata // pega as informações da entidade
         const relations = metadata.relations.map(relation => relation.propertyName) // pega o nome de todas as relações
+        relations.push("participate.meetings")
+        
         const user = await this.userRepository.findOne({ 
             where: { user_id: id },
             relations: relations,
