@@ -23,14 +23,13 @@ export class Reservations {
   user: Users
 
   @OneToOne(() => Meetings, meetings => meetings.meeting_id)
-  @JoinColumn({ name: "meeting_id" })
   meeting: Meetings
 
-  @ManyToOne(() => VirtualRooms, vroom => vroom.reservation)
+  @ManyToOne(() => VirtualRooms, vroom => vroom.reservation, { nullable: true })
   @JoinColumn({ name: "virtual_room_id" })
-  virtualroom: VirtualRooms
+  virtualroom: VirtualRooms | null
 
-  @ManyToOne(() => PhysicalRooms, proom => proom.reservation)
+  @ManyToOne(() => PhysicalRooms, proom => proom.reservation, { nullable: true })
   @JoinColumn({ name: "physical_room_id" })
-  physicalroom: PhysicalRooms
+  physicalroom: PhysicalRooms | null
 }

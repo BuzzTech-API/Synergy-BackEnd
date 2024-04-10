@@ -17,6 +17,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { Presence } from './entities/presence.entity';
 import { PhysicalroomsModule } from './models/physicalrooms/physicalrooms.module';
+import { MeetingsModule } from './models/meetings/meetings.module';
+import { GuestsModule } from './models/guests/guests.module';
 
 
 @Module({
@@ -37,7 +39,9 @@ import { PhysicalroomsModule } from './models/physicalrooms/physicalrooms.module
     VirtualroomsModule,
     ReservationsModule,
     AuthModule,
-    PhysicalroomsModule
+    MeetingsModule,
+    PhysicalroomsModule,
+    GuestsModule,
   ],
   controllers: [AppController],
   providers: [AppService, {
