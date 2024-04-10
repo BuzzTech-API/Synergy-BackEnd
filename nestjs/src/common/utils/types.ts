@@ -21,7 +21,7 @@ export type CreateReservationsParams = {
 }
 
 export class CreatePhysicalroomParams {
-    virtual_room_name: string
+    physical_room_name: string
     physical_room_vacancies: number
-    virtual_room_permission_level: number
+    physical_room_permission_level: number
 }
