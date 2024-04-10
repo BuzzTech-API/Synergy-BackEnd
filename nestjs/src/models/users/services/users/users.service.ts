@@ -28,11 +28,8 @@ export class UsersService {
     }
 
     async getUserByEmail(email: string){
-        const metadata = this.userRepository.metadata
-        const relations = metadata.relations.map(relation => relation.propertyName)
         const user = await this.userRepository.findOne({ 
-            where: { user_email: email },
-            relations: relations
+            where: { user_email: email }
         })
         if(!user){
             throw new Error('Usuário não existe')
