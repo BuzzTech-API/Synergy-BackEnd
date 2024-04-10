@@ -21,6 +21,12 @@ export type CreateReservationsParams = {
     physical_room_id: number
 }
 
+export class CreatePhysicalroomParams {
+    physical_room_name: string
+    physical_room_vacancies: number
+    physical_room_permission_level: number
+}
+
 export type CreateMeetingParams = {
     meeting_title: string
     meeting_subject: string

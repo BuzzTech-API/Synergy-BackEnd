@@ -16,8 +16,8 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { Presence } from './entities/presence.entity';
-import { MeetingsModule } from './models/meetings/meetings.module';
 import { PhysicalroomsModule } from './models/physicalrooms/physicalrooms.module';
+import { MeetingsModule } from './models/meetings/meetings.module';
 import { GuestsModule } from './models/guests/guests.module';
 
 
@@ -25,6 +25,7 @@ import { GuestsModule } from './models/guests/guests.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
+      // host: 'localhost', //Pra quem n roda o docker
       host: 'db',
       port: 3306,
       username: 'Syatt',

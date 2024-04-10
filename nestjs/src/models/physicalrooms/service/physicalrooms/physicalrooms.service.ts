@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
+import { CreatePhysicalroomParams } from 'src/common/utils/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhysicalRooms } from 'src/entities/physicalrooms.enity';
 import { Repository } from 'typeorm';
@@ -10,6 +11,11 @@ export class PhysicalroomsService {
     @InjectRepository(PhysicalRooms)
     private physicalroomsRepository: Repository<PhysicalRooms>,
   ) {}
+  
+    createPhysicalroom(physicalroomDetails: CreatePhysicalroomParams){
+        const newPhysicalroom = this.physicalroomRepository.create(physicalroomDetails)
+        return this.physicalroomRepository.save(newPhysicalroom)
+    }
 
   
   async getPhysicalroomById(id: number){
