@@ -13,7 +13,6 @@ export class GuestsService {
 
     createGuest(guestDetails: CreateGuestParams) {
         const newGuest = this.guestsRepository.create(guestDetails)
-        console.log(newGuest)
         return this.guestsRepository.save(newGuest)
     }
 }
