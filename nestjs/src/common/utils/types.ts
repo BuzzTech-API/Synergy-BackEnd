@@ -38,3 +38,12 @@ export type CreateGuestParams = {
     guest_name: string
     guest_email: string
 }
+
+export type User = {
+    user_id: number
+    user_permission_level: number
+    user_email: string
+    user_board: string
+    user_name: string
+    is_active: boolean
+}

@@ -11,7 +11,7 @@ export class PhysicalroomsController {
     @Header('Content-Type', 'application/json')
     async createPhysicalroom(@Body() createPhysicalroomDto:CreatePhysicalroomDto) {
         try{
-            const newPhysicalroom = await this.physicalroomService.createPhysicalroom(createPhysicalroomDto)
+            const newPhysicalroom = await this.physicalroomsService.createPhysicalroom(createPhysicalroomDto)
             return newPhysicalroom
         } catch(error){
             throw new HttpException(error.message, HttpStatus.CONFLICT);
