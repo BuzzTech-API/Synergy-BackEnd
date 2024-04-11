@@ -42,7 +42,11 @@ export class UsersService {
         if(!users){
             throw new Error('Erro ao pegar os usuários')
         }
-        return users
+        const usersWithoutPassword = users.map(user => {
+            const { user_password, ...userWithoutPassword } = user
+            return userWithoutPassword
+        })
+        return usersWithoutPassword
     }
 
     async createUser(userDetails: CreateUserParams) { //função para criar um usuario no banco de dados (cadastro)
