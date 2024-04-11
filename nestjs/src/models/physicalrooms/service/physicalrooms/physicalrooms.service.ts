@@ -13,8 +13,8 @@ export class PhysicalroomsService {
   ) {}
   
     createPhysicalroom(physicalroomDetails: CreatePhysicalroomParams){
-        const newPhysicalroom = this.physicalroomRepository.create(physicalroomDetails)
-        return this.physicalroomRepository.save(newPhysicalroom)
+        const newPhysicalroom = this.physicalroomsRepository.create(physicalroomDetails)
+        return this.physicalroomsRepository.save(newPhysicalroom)
     }
 
   
