@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from 'src/common/utils/constants';
 import { User } from 'src/common/utils/types';
 import { UsersService } from 'src/models/users/services/users/users.service';
 
@@ -25,8 +26,6 @@ export class AuthService {
     }
 
     async login(user: User) { // método para gerar um token de acesso após o login bem-sucedido
-
-
         const payload = { // cria um payload com as informações do usuário para serem incluídas no token
             user: {
                 user_id: user.user_id,
@@ -38,16 +37,14 @@ export class AuthService {
         return {
             user: payload.user,
             backendTokens: {
-                access_token: this.jwtService.sign(payload),
-                refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }), //colocar o refresh token aqui
+                access_token: this.jwtService.sign(payload, { secret: jwtConstants.secret }), //assina o jwt com senhas diferentes para não ter o mesmo acesso
+                refresh_token: this.jwtService.sign(payload, { expiresIn: '7d', secret: jwtConstants.refreshToken }),
                 expiresIn: new Date().setTime(new Date().getTime() + 3599),
             }, // retorna o token de acesso assinado usando o serviço JWT
         }
     }
 
-    async refreshToken(body: any) {
-        const data = this.decodeToken(body.refresh) // decodifica o token
-        const user: User = data.user // pega o campo user
+    async refreshToken(user: User) {
         const payload = { // cria um payload com as informações do usuário para serem incluídas no token
             user: {
                 user_id: user.user_id,
@@ -57,9 +54,7 @@ export class AuthService {
             }
         }
         return {
-            access_token: this.jwtService.sign(payload),
-            refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }), //colocar o refresh token aqui
-            expiresIn: new Date().setTime(new Date().getTime() + 3599),
+            access_token: this.jwtService.sign(payload, { secret: jwtConstants.secret })
         }
 
     }

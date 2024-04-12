@@ -18,11 +18,7 @@ import { RefreshJwtStrategy } from './strategy/refreshToken.strategy';
     UsersModule,
     PassportModule,
     TypeOrmModule.forFeature([Users]),
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600s' },
-    }),
+    JwtModule.register({})
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, LocalStrategy, RefreshJwtStrategy,
