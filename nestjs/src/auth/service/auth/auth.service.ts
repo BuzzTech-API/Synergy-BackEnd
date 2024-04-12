@@ -39,8 +39,9 @@ export class AuthService {
             user: payload.user,
             backendTokens: {
                 access_token: this.jwtService.sign(payload),
-                refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }) //colocar o refresh token aqui
-            } // retorna o token de acesso assinado usando o serviço JWT
+                refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }), //colocar o refresh token aqui
+                expiresIn: new Date().setTime(new Date().getTime() + 3599),
+            }, // retorna o token de acesso assinado usando o serviço JWT
         }
     }
 
@@ -55,8 +56,10 @@ export class AuthService {
                 user_permission_level: user.user_permission_level,
             }
         }
-        return { 
-            access_token: this.jwtService.sign(payload)
+        return {
+            access_token: this.jwtService.sign(payload),
+            refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }), //colocar o refresh token aqui
+            expiresIn: new Date().setTime(new Date().getTime() + 3599),
         }
 
     }
