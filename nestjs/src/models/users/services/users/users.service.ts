@@ -12,34 +12,42 @@ export class UsersService {
     // metodos aqui
     // Ex:  getUsers(): User[] { return this.users; }
 
-    async getUserById(id: number){
+    async getUserById(id: number) {
         const metadata = this.userRepository.metadata // pega as informações da entidade
         const relations = metadata.relations.map(relation => relation.propertyName) // pega o nome de todas as relações
         relations.push("participate.meetings")
-        
-        const user = await this.userRepository.findOne({ 
+
+        const user = await this.userRepository.findOne({
             where: { user_id: id },
             relations: relations,
         })
-        if(!user){
+        if (!user) {
             throw new Error('Usuário não existe')
-        } 
+        }
         return user
     }
 
-    async getUserByEmail(email: string){
-        const user = await this.userRepository.findOne({ 
+    async getUserByEmail(email: string) {
+        const user = await this.userRepository.findOne({
             where: { user_email: email }
         })
-        if(!user){
+        if (!user) {
             throw new Error('Usuário não existe')
-        } 
+        }
         return user
     }
 
     async getUsers() {
-        const users = await this.userRepository.find()
-        if(!users){
+
+        const metadata = this.userRepository.metadata // pega as informações da entidade
+        const relations = metadata.relations.map(relation => relation.propertyName) // pega o nome de todas as relações
+        relations.push("participate.meetings")
+        relations.push("participate.meetings.reservations")
+
+        const users = await this.userRepository.find({
+            relations: relations,
+        })
+        if (!users) {
             throw new Error('Erro ao pegar os usuários')
         }
         const usersWithoutPassword = users.map(user => {
