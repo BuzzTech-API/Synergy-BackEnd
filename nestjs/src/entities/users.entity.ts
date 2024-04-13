@@ -30,5 +30,5 @@ export class Users {
   reservations: Reservations[];
 
   @OneToMany(() => Participate, participate => participate.user)
-  participate: Participate;
+  participate: Participate[];
 }
