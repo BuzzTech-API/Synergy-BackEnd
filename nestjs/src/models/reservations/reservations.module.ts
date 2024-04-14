@@ -9,5 +9,6 @@ import { PhysicalroomsModule } from '../physicalrooms/physicalrooms.module';
   imports: [TypeOrmModule.forFeature([Reservations]), PhysicalroomsModule],
   controllers: [ReservationsController],
   providers: [ReservationsService],
+  exports: [ReservationsService]
 })
 export class ReservationsModule {}
