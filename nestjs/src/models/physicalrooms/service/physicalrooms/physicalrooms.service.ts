@@ -19,8 +19,11 @@ export class PhysicalroomsService {
 
   
   async getPhysicalroomById(id: number){
+    const metadata = this.physicalroomsRepository.metadata // pega as informações da entidade
+    const relations = metadata.relations.map(relation => relation.propertyName) // pega o nome de todas as relações
     const physicalroom = await this.physicalroomsRepository.findOne({ 
         where: { physical_room_id: id },
+        relations: relations,
     })
     if(!physicalroom){
         throw new Error('Sala não existe')

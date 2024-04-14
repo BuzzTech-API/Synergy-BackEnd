@@ -3,10 +3,10 @@ import { ReservationsController } from './controller/reservations/reservations.c
 import { ReservationsService } from './service/reservations/reservations.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Reservations } from 'src/entities/reservations.entity';
-import { PhysicalroomsModule } from '../physicalrooms/physicalrooms.module';
+import { PhysicalRooms } from 'src/entities/physicalrooms.enity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reservations]), PhysicalroomsModule],
+  imports: [TypeOrmModule.forFeature([Reservations, PhysicalRooms])],
   controllers: [ReservationsController],
   providers: [ReservationsService],
   exports: [ReservationsService]
