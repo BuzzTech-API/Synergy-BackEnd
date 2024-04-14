@@ -34,6 +34,16 @@ export type CreateMeetingParams = {
     reserve_id: number
 }
 
+export type CreateParticipateParams = {
+    meeting_id: number
+    users_list: number[]
+}
+
+export type CreatePresenceParams = {
+    meeting_id: number
+    guests_list: number[]
+}
+
 export type CreateGuestParams = {
     guest_name: string
     guest_email: string
