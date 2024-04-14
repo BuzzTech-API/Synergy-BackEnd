@@ -3,14 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateReservationsParams } from 'src/common/utils/types';
 import { Reservations } from 'src/entities/reservations.entity';
 import { Repository } from 'typeorm';
-import { PhysicalroomsService } from 'src/models/physicalrooms/service/physicalrooms/physicalrooms.service';
+import { PhysicalRooms } from 'src/entities/physicalrooms.enity';
 
 @Injectable()
 export class ReservationsService {
   constructor(
     @InjectRepository(Reservations)
     private reservationsRepository: Repository<Reservations>,
-    private physicalroomService: PhysicalroomsService,
+    @InjectRepository(PhysicalRooms)
+    private physicalroomRepository: Repository<PhysicalRooms>,
   ) {}
 
   getReservation() {
@@ -19,7 +20,9 @@ export class ReservationsService {
 
   async createPhysicalRoomReservation(reservationsDetails: CreateReservationsParams) {
     const newReservations = this.reservationsRepository.create(reservationsDetails)
-    const physicalRoom = await this.physicalroomService.getPhysicalroomById(reservationsDetails.physical_room_id) // Pega o objeto physical room pela rota
+    const physicalRoom = await this.physicalroomRepository.findOne({
+      where: { physical_room_id: reservationsDetails.physical_room_id }
+    }) // Pega o objeto physical room direto  do banco de dados
     newReservations.physicalroom = physicalRoom // Coloca o objeto physical room dentro do campo da tabela de reservas
     
     return this.reservationsRepository.save(newReservations)
