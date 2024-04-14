@@ -54,9 +54,10 @@ export class AuthService {
             }
         }
         return {
-            access_token: this.jwtService.sign(payload, { secret: jwtConstants.secret })
+            access_token: this.jwtService.sign(payload, { secret: jwtConstants.secret }),
+            refresh_token: this.jwtService.sign(payload, { expiresIn: '7d', secret: jwtConstants.refreshToken }),
+            expiresIn: new Date().setTime(new Date().getTime() + 3599),
         }
-
     }
 
     decodeToken(token): any { // método para decodificar um token JWT
