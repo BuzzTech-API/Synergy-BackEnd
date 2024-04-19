@@ -10,6 +10,10 @@ export class CreatePhysicalroomDto{
     @Min(1)
     physical_room_vacancies: number
 
+    @IsString()
+    @IsNotEmpty()
+    physical_room_address: string
+
     @IsNotEmpty()
     @Min(1)
     @Max(3)
