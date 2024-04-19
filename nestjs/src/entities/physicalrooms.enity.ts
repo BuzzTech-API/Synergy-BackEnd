@@ -16,6 +16,9 @@ export class PhysicalRooms {
   @Column({ type: "int" })
   physical_room_vacancies: number;
 
+  @Column({ type: "varchar" })
+  physical_room_address: string;
+
   @Column({ default: true })
   is_active: boolean;
 
