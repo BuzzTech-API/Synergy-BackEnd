@@ -1,28 +1,27 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from 'src/common/utils/constants';
 import { User } from 'src/common/utils/types';
-import { UsersService } from 'src/models/users/services/users/users.service';
+import { Users } from 'src/entities/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
     constructor(
-        private userService: UsersService,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @InjectRepository(Users) private userRepository: Repository<Users>,
     ) { }
 
     async validateUser(email: string, pass: string): Promise<any> { // método para validar o usuário com base no email e senha
-        try {
-            const user = await this.userService.getUserByEmail(email) // busca o usuário pelo email usando o serviço de usuário
-            if (user.user_password === pass) {     // verifica se o usuário foi encontrado e se a senha corresponde à senha fornecida
-                const { user_password, ...result } = user  // retorna as informações do usuário, excluindo a senha
-                return result
-            }
-            // retorna null se o usuário não for encontrado ou se a senha estiver incorreta
-            return null
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.CONFLICT)
+        const user = await this.userRepository.findOne({ // busca o usuário pelo email direto do banco
+            where: { user_email: email }
+        })
+        if (user && user.user_password === pass) {     // verifica se o usuário foi encontrado e se a senha corresponde à senha fornecida
+            const { user_password, ...result } = user  // retorna as informações do usuário, excluindo a senha
+            return result
         }
+        // retorna null se o usuário não for encontrado ou se a senha estiver incorreta
+        return null
     }
 
     async login(user: User) { // método para gerar um token de acesso após o login bem-sucedido
@@ -64,3 +63,7 @@ export class AuthService {
         return this.jwtService.decode(token)
     }
 }
+function InjectRepository(Users: any): (target: typeof AuthService, propertyKey: undefined, parameterIndex: 1) => void {
+    throw new Error('Function not implemented.');
+}
+
