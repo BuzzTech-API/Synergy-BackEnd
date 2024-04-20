@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import { jwtConstants } from 'src/common/utils/constants';
 import { User } from 'src/common/utils/types';
 import { Users } from 'src/entities/users.entity';
@@ -63,7 +64,3 @@ export class AuthService {
         return this.jwtService.decode(token)
     }
 }
-function InjectRepository(Users: any): (target: typeof AuthService, propertyKey: undefined, parameterIndex: 1) => void {
-    throw new Error('Function not implemented.');
-}
-
