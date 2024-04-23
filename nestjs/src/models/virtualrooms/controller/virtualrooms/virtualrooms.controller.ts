@@ -1,4 +1,4 @@
-import { Body, Controller, Header, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Header, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { CreateVirtualRoomDto } from 'src/common/dtos/CreateVirtualRoom.dto';
 import { VirtualroomsService } from 'src/models/virtualrooms/service/virtualrooms/virtualrooms.service';
 
@@ -7,13 +7,10 @@ export class VirtualroomsController {
     constructor(private virtualRoomService: VirtualroomsService) { }
 
     @Post()
+    @HttpCode(201)
     @Header('Content-Type', 'application/json')
     async createVirtualRoom(@Body() createVirtualRoomDto: CreateVirtualRoomDto) {
-        try {
-            const newVirtualRoom = await this.virtualRoomService.createVirtualRoom(createVirtualRoomDto);
-            return newVirtualRoom
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.CONFLICT);
-        }
+        const newVirtualRoom = await this.virtualRoomService.createVirtualRoom(createVirtualRoomDto);
+        return newVirtualRoom
     }
 }

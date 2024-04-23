@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Header, HttpException, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Header, HttpCode, HttpException, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { CreateUserDto } from 'src/common/dtos/CreateUser.dto';
 import { Public } from 'src/common/utils/constants';
 import { UsersService } from 'src/models/users/services/users/users.service';
@@ -8,34 +8,25 @@ export class UsersController {
     constructor(private userService: UsersService) { }
 
     @Post()
+    @HttpCode(201)
     @Header('Content-Type', 'application/json')
     async createUser(@Body() createUserDto: CreateUserDto) {
-        try {
-            const newUser = await this.userService.createUser(createUserDto);
-            return newUser
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.CONFLICT);
-        }
+        const newUser = await this.userService.createUser(createUserDto)
+        return newUser
     }
 
     @Get()
+    @HttpCode(200)
     async getUsers() {
-        try {
-            const users = await this.userService.getUsers()
-            return users
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.CONFLICT)
-        }
+        const users = await this.userService.getUsers()
+        return users
     }
 
     @Get(':id') // pega o id da rota /users/{id}
+    @HttpCode(200)
     async getUserById(@Param('id', ParseIntPipe) id: number) { // usa os id da rota (ParseIntPipe): garante que o id é um numero
-        try {
-            const user = await this.userService.getUserById(id)
-            return user
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.CONFLICT)
-        }
+        const user = await this.userService.getUserById(id)
+        return user
     }
 
     //rotas de usuarios aqui

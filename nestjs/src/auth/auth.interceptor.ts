@@ -13,7 +13,7 @@ export class AuthInterceptor implements NestInterceptor {
         // verifica se a rota da solicitação não é a rota de login e se há um token de autorização presente
         if (req.path !== '/auth/login' && tokenArray && req.path !== '/auth/refresh') {
             // decodifica o token de autorização para obter as informações do usuário e adiciona ao corpo da solicitação
-            req.body["user"] = this.authService.decodeToken(tokenArray.split(" ")[1]).user
+            req["user"] = this.authService.decodeToken(tokenArray.split(" ")[1]).user
         }
 
         // chama o próximo manipulador de chamada na cadeia de execução e retorna o resultado
