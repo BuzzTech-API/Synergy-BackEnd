@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,16 +13,21 @@ import { UsersModule } from './models/users/users.module';
 import { VirtualroomsModule } from './models/virtualrooms/virtualrooms.module';
 import { ReservationsModule } from './models/reservations/reservations.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { Presence } from './entities/presence.entity';
 import { PhysicalroomsModule } from './models/physicalrooms/physicalrooms.module';
 import { MeetingsModule } from './models/meetings/meetings.module';
 import { GuestsModule } from './models/guests/guests.module';
+import { MailerModule } from './mailer/mailer.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: './.env',
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       // host: 'localhost', //Pra quem n roda o docker
@@ -42,11 +47,16 @@ import { GuestsModule } from './models/guests/guests.module';
     MeetingsModule,
     PhysicalroomsModule,
     GuestsModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_INTERCEPTOR,
     useClass: AuthInterceptor,
-  }],
+  },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    }],
 })
-export class AppModule {}
+export class AppModule { }
