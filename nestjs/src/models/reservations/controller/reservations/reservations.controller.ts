@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
 import { CreateReservationsDto } from 'src/common/dtos/CreateReservations.dto';
 import { ReservationsService } from '../../service/reservations/reservations.service';
 
@@ -16,7 +16,7 @@ export class ReservationsController {
 
   @HttpCode(201)
   @Post('/physicalroom')
-  createReservation(@Body() createReservationsDto: CreateReservationsDto) {
-    return this.reservationsService.createPhysicalRoomReservation(createReservationsDto);
+  createReservation(@Body() createReservationsDto: CreateReservationsDto, @Req() req) {
+    return this.reservationsService.createPhysicalRoomReservation(createReservationsDto, req.user)
   }
 }
