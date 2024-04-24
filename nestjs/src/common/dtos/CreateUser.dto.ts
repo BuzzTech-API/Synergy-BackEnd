@@ -1,4 +1,4 @@
-import { IsAlpha, IsEmail, IsNotEmpty, IsString, Max, MaxLength, Min } from "class-validator"
+import { IsEmail, IsNotEmpty, IsString, Max, MaxLength, Min } from "class-validator"
 
 export class CreateUserDto { // Modelo para os dados que chegam das rotas
     

@@ -1,3 +1,4 @@
+import { Address } from "nodemailer/lib/mailer"
 import { Meetings } from "src/entities/meetings.entity"
 
 export class CreateUserParams { // Modelo de dados final que vai ser enviado para o banco de dados
@@ -57,4 +58,12 @@ export type User = {
     user_board: string
     user_name: string
     is_active: boolean
+}
+
+export type SendEmail = {
+    recipients: Address[] // pessaos que vão receber o email
+    subject: string // conteudo  da linha de assunto do email
+    html: string 
+    text?: string
+
 }
