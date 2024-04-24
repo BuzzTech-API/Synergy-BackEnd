@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateReservationsParams } from 'src/common/utils/types';
+import { CreateReservationsParams, User } from 'src/common/utils/types';
 import { Reservations } from 'src/entities/reservations.entity';
 import { Repository } from 'typeorm';
 import { PhysicalRooms } from 'src/entities/physicalrooms.enity';
@@ -38,9 +38,12 @@ export class ReservationsService {
     }
   }
 
-  async createPhysicalRoomReservation(reservationsDetails: CreateReservationsParams) {
+  async createPhysicalRoomReservation(reservationsDetails: CreateReservationsParams, user: User) {
     try {
-      const newReservations = this.reservationsRepository.create(reservationsDetails)
+      const newReservations = this.reservationsRepository.create({
+        ...reservationsDetails, 
+        user
+      })
       const physicalRoom = await this.physicalroomRepository.findOne({
         where: { physical_room_id: reservationsDetails.physical_room_id }
       }) // Pega o objeto physical room direto  do banco de dados
