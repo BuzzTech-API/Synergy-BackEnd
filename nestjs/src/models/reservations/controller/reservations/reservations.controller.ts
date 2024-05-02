@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
-import { CreateReservationsDto } from 'src/common/dtos/CreateReservations.dto';
+import { CreateReservationsDto, CreateVirtualReservationsDto } from 'src/common/dtos/CreateReservations.dto';
 import { ReservationsService } from '../../service/reservations/reservations.service';
 
 @Controller('reservations')
@@ -16,7 +16,14 @@ export class ReservationsController {
 
   @HttpCode(201)
   @Post('/physicalroom')
-  createReservation(@Body() createReservationsDto: CreateReservationsDto, @Req() req) {
+  createReservationPhysical(@Body() createReservationsDto: CreateReservationsDto, @Req() req) {
     return this.reservationsService.createPhysicalRoomReservation(createReservationsDto, req.user)
+  }
+
+  @HttpCode(201)
+  @Post('/virtualroom')
+  createReservationVirtual(@Body() createReservationsDto: CreateVirtualReservationsDto, @Req() req) {
+    console.log("Criando reserva virtual")
+    return this.reservationsService.createVirtualRoomReservation(createReservationsDto, req.user)
   }
 }
