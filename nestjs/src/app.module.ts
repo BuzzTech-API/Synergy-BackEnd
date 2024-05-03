@@ -21,6 +21,7 @@ import { MeetingsModule } from './models/meetings/meetings.module';
 import { GuestsModule } from './models/guests/guests.module';
 import { MailerModule } from './mailer/mailer.module';
 import { ConfigModule } from '@nestjs/config';
+import { ZoomModule } from './zoom/zoom.module';
 
 
 @Module({
@@ -37,7 +38,7 @@ import { ConfigModule } from '@nestjs/config';
       password: 'Senha123#',
       database: 'api',
       entities: [Users, PhysicalRooms, Participate, Meetings, Guests, Reservations, VirtualRooms, Presence],
-      synchronize: true,
+      synchronize: false,
       autoLoadEntities: true,
     }),
     UsersModule,
@@ -48,6 +49,7 @@ import { ConfigModule } from '@nestjs/config';
     PhysicalroomsModule,
     GuestsModule,
     MailerModule,
+    ZoomModule,
   ],
   controllers: [AppController],
   providers: [AppService, {
