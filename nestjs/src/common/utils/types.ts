@@ -22,6 +22,14 @@ export type CreateReservationsParams = {
     physical_room_id: number
 }
 
+//Ivan novo type de VirtualRoom para conseguir utilizar o "virtual_room_id" como parametro. 
+export type CreateReservationsVirtualParams = {
+    reserve_date: Date
+    reserve_start: Date
+    reserve_end: Date
+    virtual_room_id: number
+}
+
 export class CreatePhysicalroomParams {
     physical_room_name: string
     physical_room_vacancies: number
