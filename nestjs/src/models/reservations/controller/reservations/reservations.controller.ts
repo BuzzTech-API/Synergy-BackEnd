@@ -1,5 +1,6 @@
 import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
 import {
+  CreateHibridReservationsDto,
   CreateReservationsDto,
   CreateVirtualReservationsDto,
 } from 'src/common/dtos/CreateReservations.dto';
@@ -34,10 +35,22 @@ export class ReservationsController {
     @Body() createReservationsDto: CreateVirtualReservationsDto,
     @Req() req,
   ) {
-    console.log('Criando reserva virtual');
     return this.reservationsService.createVirtualRoomReservation(
       createReservationsDto,
       req.user,
     );
+  }
+
+
+  @HttpCode(201)
+  @Post('/hibrid')
+  createReservationHibrid(
+    @Body() createReservationsDto: CreateHibridReservationsDto,
+    @Req() req,
+  ) {
+    return this.reservationsService.createVirtualRoomReservation(
+      createReservationsDto,
+      req.user,
+    )
   }
 }

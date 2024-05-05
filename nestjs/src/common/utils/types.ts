@@ -30,6 +30,14 @@ export type CreateReservationsVirtualParams = {
     virtual_room_id: number
 }
 
+export type CreateReservationsHibridParams = {
+    reserve_date: Date
+    reserve_start: Date
+    reserve_end: Date
+    virtual_room_id: number
+    physical_room_id: number
+}
+
 export class CreatePhysicalroomParams {
     physical_room_name: string
     physical_room_vacancies: number

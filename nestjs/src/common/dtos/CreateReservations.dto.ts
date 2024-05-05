@@ -44,7 +44,7 @@ export class CreateVirtualReservationsDto {
 }
 
 //Ivan: Aqui foi preciso criar um novo DTO para lidar com o campo "virtual_room_id", que precisa ser exatamente igual ao que vai receber do FrontEnd via JSON
-export class CreateHibridaReservationsDto {
+export class CreateHibridReservationsDto {
     @IsNotEmpty()
     @IsDateString()
     @IsISO8601()

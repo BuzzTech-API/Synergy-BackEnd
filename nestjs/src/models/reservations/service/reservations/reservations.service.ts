@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  CreateReservationsHibridParams,
   CreateReservationsParams,
   CreateReservationsVirtualParams,
   User,
@@ -112,9 +113,56 @@ export class ReservationsService {
       }
 
       newReservations.virtualroom = virtualRoom; // Coloca o objeto "virtual" room dentro do campo da tabela de reservas
-      console.log(newReservations);
 
       return this.reservationsRepository.save(newReservations);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: error.message,
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      } else
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: error.message,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+    }
+  }
+
+  async createHibridReservation(
+    reservationsDetails: CreateReservationsHibridParams,
+    user: User,
+  ) {
+    try {
+      const newReservations = this.reservationsRepository.create({
+        ...reservationsDetails, //cria uma nova reserva baseada no usuário que está logado
+        user,
+      });
+      const physicalRoom = await this.physicalroomRepository.findOne({
+        where: { physical_room_id: reservationsDetails.physical_room_id }
+      })
+      if (!physicalRoom) {
+        throw new NotFoundException('Sala Física não encontrada')
+      }
+
+      const virtualRoom = await this.virtualroomRepository.findOne({
+        where: { virtual_room_id: reservationsDetails.virtual_room_id },
+      }); // Pega o objeto "virtual" room direto do banco de dados
+
+      if (!virtualRoom) {
+        throw new NotFoundException('Sala Virtual não encontrada');
+      }
+
+      newReservations.physicalroom = physicalRoom
+      newReservations.virtualroom = virtualRoom // Coloca o objeto "virtual" room dentro do campo da tabela de reservas
+
+      return this.reservationsRepository.save(newReservations)
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new HttpException(
