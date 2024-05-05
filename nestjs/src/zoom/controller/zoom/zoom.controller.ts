@@ -1,10 +1,6 @@
-import {
-  Controller,
-  Query,
-  Post,
-  HttpCode,
-  Param,
-} from '@nestjs/common';
+import { Controller, Query, Post, HttpCode, Param, Body } from '@nestjs/common';
+import { CreateMeetingDto } from 'src/common/dtos/CreateMeeting.dto';
+import { zoomMeetinhCreateDto } from 'src/common/dtos/Zoom.dto';
 import { ZoomService } from 'src/zoom/service/zoom/zoom.service';
 
 @Controller('zoom')
@@ -20,6 +16,12 @@ export class ZoomController {
   @HttpCode(200)
   @Post('/refreshToken')
   async refreshToken(@Query('refreshToken') refreshToken: string) {
-      return await this.zoomService.refreshZoomToken(refreshToken)
+    return await this.zoomService.refreshZoomToken(refreshToken);
+  }
+
+  @HttpCode(201)
+  @Post('/meeting')
+  async createMeeting(@Body() meeting: zoomMeetinhCreateDto) {
+    return await this.zoomService.createMeeting(meeting);
   }
 }

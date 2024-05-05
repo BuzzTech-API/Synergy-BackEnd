@@ -79,12 +79,13 @@ export type User = {
 export type SendEmail = {
     recipients: Address[] // pessaos que vão receber o email
     subject: string // conteudo  da linha de assunto do email
-    html: string 
+    html: string
     text?: string
 }
 
 export type CreateMeeting = {
-    token: string
+    access_token: string
+    refresh_token: string
     topic: string
     start_time: string
     duration: number
