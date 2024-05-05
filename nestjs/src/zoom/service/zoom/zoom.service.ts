@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { HttpService } from '@nestjs/axios';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
-import { lastValueFrom } from 'rxjs';
+import { HttpService } from '@nestjs/axios'
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import axios from 'axios'
+import { lastValueFrom } from 'rxjs'
 
 
 // garantir a Chamada do .env
@@ -19,6 +19,12 @@ export class ZoomService {
   private clientId: string = this.configService.get<string>('CLIENT_ID')
   private clientSecret: string = this.configService.get<string>('CLIENT_SECRET')
   private redirectUri: string = this.configService.get<string>('REDIRECT_URI')
+
+  private generateBasicAuthHeader(): string {
+    const credentials = `${this.clientId}:${this.clientSecret}`
+    const encodedCredentials = Buffer.from(credentials).toString('base64')
+    return `Basic ${encodedCredentials}`
+  }
 
 
   async createMeeting(token: string, topic: string, start_time: string, duration: number, agenda: string, meeting_invitees: string[]) {
@@ -56,13 +62,13 @@ export class ZoomService {
         headers: {
           'Authorization': `Bearer ${token}`
         },
-      });
+      })
 
-      const body = response.data;
-      return body;
+      const body = response.data
+      return body
 
     } catch (error) {
-      console.error('Error', error);
+      console.error('Error', error)
     }
   }
 
@@ -70,9 +76,7 @@ export class ZoomService {
   async getToken(code: string) {
     try {
       // Configurações para o basic auth
-      const credentials = `${this.clientId}:${this.clientSecret}`
-      const encodedCredentials = Buffer.from(credentials).toString('base64');
-      const basicAuthHeader = `Basic ${encodedCredentials}`;
+      const basicAuthHeader = this.generateBasicAuthHeader()
 
       // Parametros da rota
       const data = {
@@ -80,7 +84,7 @@ export class ZoomService {
         grant_type: 'authorization_code',
         redirect_uri: this.redirectUri
       }
-    
+
       // Enviando a requisição POST para obter o token de acesso
       const response = this.httpService.post(`https://zoom.us/oauth/token`, data, {
         headers: {
@@ -88,12 +92,12 @@ export class ZoomService {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       })
-      
+
       // Aguardando a conclusão da requisição e obtendo os dados da resposta
       return (await lastValueFrom(response)).data
 
     } catch (error) {
-      console.error("Erro da API do Zoom:", error.response ? error.response.data : error.message);
+      console.error("Erro da API do Zoom:", error.response ? error.response.data : error.message)
 
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
@@ -105,23 +109,27 @@ export class ZoomService {
 
   async refreshZoomToken(refreshToken: string): Promise<string> {
     try {
-      const response = await axios.post('https://zoom.us/oauth/token', null, {
-        params: {
-          grant_type: 'refresh_token',
-          refresh_token: refreshToken,
-        },
-        headers: {
-          Authorization: `Basic ${Buffer.from(
-            `${this.clientId}:${this.clientSecret}`,
-          ).toString('base64')}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
+      const params = {
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken
+      }
+      const basicAuthHeader = this.generateBasicAuthHeader()
 
-      return response.data;
+      const response = this.httpService.post('https://zoom.us/oauth/token', params, {
+        headers: {
+          Authorization: basicAuthHeader,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }
+      })
+
+      return (await lastValueFrom(response)).data
     } catch (error) {
-      console.error('Error', error);
-      throw new HttpException('Error refreshing token', HttpStatus.INTERNAL_SERVER_ERROR);
+      console.error("Erro da API do Zoom:", error.response ? error.response.data : error.message)
+
+      throw new HttpException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        error: error.message,
+      }, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
@@ -132,11 +140,11 @@ export class ZoomService {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
-      });
+      })
 
-      return response;
+      return response
     } catch (error) {
-      console.error('Error', error);
+      console.error('Error', error)
     }
   }
 
