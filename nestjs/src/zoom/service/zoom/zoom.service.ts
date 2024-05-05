@@ -67,19 +67,26 @@ export class ZoomService {
 
 
   async getToken(code: string) {
-    const response = await axios.post('https://zoom.us/oauth/token', null, {
-      params: {
-        grant_type: 'authorization_code',
-        code: code,
-        redirect_uri: this.redirectUri
-      },
-      headers: {
-        'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+    try {
+      const response = await axios.post('https://zoom.us/oauth/token', null, {
+        params: {
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: this.redirectUri
+        },
+        headers: {
+          'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
 
-    return (response);
+      return response
+    } catch (error) {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: error.message,
+      }, HttpStatus.BAD_REQUEST)
+    }
   }
 
 

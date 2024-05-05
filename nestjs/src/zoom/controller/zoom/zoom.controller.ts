@@ -8,20 +8,18 @@ import {
   Body,
   HttpCode,
 } from '@nestjs/common';
+import { AuthorizationCode } from 'src/common/dtos/Zoom.dto';
 import { ZoomService } from 'src/zoom/service/zoom/zoom.service';
+
+
 @Controller('zoom')
 export class ZoomController {
   constructor(private zoomService: ZoomService) { }
 
   @HttpCode(200)
   @Post('/token')
-  async getToken(@Body() code: string) {
-    try {
-      return this.zoomService.getToken(code);
-    } catch (error) {
-      console.error('Error', error);
-      throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  async getToken(@Body() body: AuthorizationCode) {
+    return this.zoomService.getToken(body.code)
   }
 
   @Get('/refreshToken')
