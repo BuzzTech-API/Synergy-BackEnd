@@ -10,8 +10,17 @@ import { Presence } from 'src/entities/presence.entity';
 import { Reservations } from 'src/entities/reservations.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Meetings, Participate, Users, Guests, Presence, Reservations])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Meetings,
+      Participate,
+      Users,
+      Guests,
+      Presence,
+      Reservations,
+    ]),
+  ],
   controllers: [MeetingsController],
-  providers: [MeetingsService]
+  providers: [MeetingsService],
 })
-export class MeetingsModule {}
+export class MeetingsModule { }

@@ -11,20 +11,26 @@ export class MeetingsController {
   @HttpCode(201)
   @Post()
   createMeeting(@Body() createMeetingDto: CreateMeetingDto) {
-    return this.meetingsService.createMeetings(createMeetingDto)
+    return this.meetingsService.createMeetings(createMeetingDto);
   }
 
   @HttpCode(201)
   @Post('/users')
-  async createParticipateMeeting(@Body() createParticipateMeetingDto: CreateParticipateDto) {
-    const participate = await this.meetingsService.createParticipateMeetings(createParticipateMeetingDto)
-    return participate
+  async createParticipateMeeting(
+    @Body() createParticipateMeetingDto: CreateParticipateDto,
+  ) {
+    const participate = await this.meetingsService.createParticipateMeetings(
+      createParticipateMeetingDto,
+    );
+    return participate;
   }
 
   @HttpCode(201)
   @Post('/guests')
-  async createPresenceMeeting(@Body() createPresenceMeetingDto: CreatePresenceDto) {
+  async createPresenceMeeting(
+    @Body() createPresenceMeetingDto: CreatePresenceDto,
+  ) {
     const presence = await this.meetingsService.createPresenceMeetings(createPresenceMeetingDto)
-    return presence
+    return presence;
   }
 }

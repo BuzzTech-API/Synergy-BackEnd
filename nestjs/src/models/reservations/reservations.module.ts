@@ -7,9 +7,11 @@ import { PhysicalRooms } from 'src/entities/physicalrooms.enity';
 import { VirtualRooms } from 'src/entities/virtualrooms.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reservations, PhysicalRooms, VirtualRooms])],
+  imports: [
+    TypeOrmModule.forFeature([Reservations, PhysicalRooms, VirtualRooms]),
+  ],
   controllers: [ReservationsController],
   providers: [ReservationsService],
-  exports: [ReservationsService]
+  exports: [ReservationsService],
 })
-export class ReservationsModule {}
+export class ReservationsModule { }
