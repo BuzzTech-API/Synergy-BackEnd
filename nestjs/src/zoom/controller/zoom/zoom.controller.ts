@@ -1,9 +1,6 @@
 import {
   Controller,
-  Get,
   Query,
-  HttpException,
-  HttpStatus,
   Post,
   HttpCode,
   Param,
