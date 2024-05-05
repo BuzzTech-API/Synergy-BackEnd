@@ -2,8 +2,8 @@
 import { HttpService } from '@nestjs/axios'
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import axios from 'axios'
 import { lastValueFrom } from 'rxjs'
+import { CreateMeeting } from 'src/common/utils/types'
 
 
 // garantir a Chamada do .env
@@ -27,48 +27,54 @@ export class ZoomService {
   }
 
 
-  async createMeeting(token: string, topic: string, start_time: string, duration: number, agenda: string, meeting_invitees: string[]) {
+  async createMeeting(createMeeting: CreateMeeting) {
+    const { topic, agenda, start_time, duration, meeting_invites, token } = createMeeting
     const type = 2
     try {
-      const response = await axios.post('https://api.zoom.us/v2/users/me/meetings', {
-        //assunto
-        topic,
-        //Descrição
-        agenda,
-        //constante -> Reunião marcada
-        type,
-        //yyyy-MM-ddTHH:mm:ssZ date-time format. For example, 2020-03-31T12:02:00Z
-        start_time,
-        //Em minutos
-        duration,
+      const response = this.httpService.post('https://api.zoom.us/v2/users/me/meetings',
+        {
+          //assunto
+          topic,
+          //Descrição
+          agenda,
+          //constante -> Reunião marcada
+          type,
+          //yyyy-MM-ddTHH:mm:ssZ date-time format. For example, 2020-03-31T12:02:00Z
+          start_time,
+          //Em minutos
+          duration,
 
-        settings: {
-          //video
-          host_video: true,
-          participant_video: true,
-          //isso deixa o convidado entrar sem o host presente
-          join_before_host: true,
-          //muta essa porr*
-          mute_upon_entry: true,
-          watermark: false,
-          use_pmi: false,
-          approval_type: 0,
-          audio: 'both',
-          auto_recording: 'none',
-          meeting_invitees,
+          settings: {
+            //video
+            host_video: true,
+            participant_video: true,
+            //isso deixa o convidado entrar sem o host presente
+            join_before_host: true,
+            //muta essa porr*
+            mute_upon_entry: true,
+            watermark: false,
+            use_pmi: false,
+            approval_type: 0,
+            audio: 'both',
+            auto_recording: 'none',
+            meeting_invites,
+          },
         },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+        })
 
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      })
-
-      const body = response.data
-      return body
+      return (await lastValueFrom(response)).data
 
     } catch (error) {
-      console.error('Error', error)
+      console.error('Erro ao criar a reunião:', error.response ? error.response.data : error.message);
+
+      throw new HttpException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        error: 'Erro ao criar a reunião',
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -136,17 +142,21 @@ export class ZoomService {
 
   async getMeetings(token: string) {
     try {
-      const response = axios.get('https://api.zoom.us/v2/users/me/meetings', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
+      const response = this.httpService.get('https://api.zoom.us/v2/users/me/meetings',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
-      return response
+      return (await lastValueFrom(response)).data
     } catch (error) {
-      console.error('Error', error)
+      console.error('Erro ao obter as reuniões:', error.response ? error.response.data : error.message);
+
+      throw new HttpException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        error: 'Erro ao obter as reuniões',
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-
 }

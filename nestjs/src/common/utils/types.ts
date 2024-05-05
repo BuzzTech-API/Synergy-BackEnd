@@ -73,5 +73,13 @@ export type SendEmail = {
     subject: string // conteudo  da linha de assunto do email
     html: string 
     text?: string
+}
 
+export type CreateMeeting = {
+    token: string
+    topic: string
+    start_time: string
+    duration: number
+    agenda: string
+    meeting_invites: string[]
 }
