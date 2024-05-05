@@ -20,17 +20,9 @@ export class ZoomController {
     return this.zoomService.getToken(code);
   }
 
-  @Get('/refreshToken')
+  @HttpCode(200)
+  @Post('/refreshToken')
   async refreshToken(@Query('refreshToken') refreshToken: string) {
-    try {
-      const response = await this.zoomService.refreshZoomToken(refreshToken);
-      return response;
-    } catch (error) {
-      console.error('Error', error);
-      throw new HttpException(
-        'Error refreshing token',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+      return await this.zoomService.refreshZoomToken(refreshToken)
   }
 }
