@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
+import { lastValueFrom } from 'rxjs';
 
 
 // garantir a Chamada do .env
@@ -68,27 +69,31 @@ export class ZoomService {
 
   async getToken(code: string) {
     try {
+      // Configurações para o basic auth
       const credentials = `${this.clientId}:${this.clientSecret}`
       const encodedCredentials = Buffer.from(credentials).toString('base64');
       const basicAuthHeader = `Basic ${encodedCredentials}`;
 
+      // Parametros da rota
       const data = {
         code: code,
         grant_type: 'authorization_code',
         redirect_uri: this.redirectUri
       }
     
-      const response = await axios.post(`https://zoom.us/oauth/token`, data, {
+      // Enviando a requisição POST para obter o token de acesso
+      const response = this.httpService.post(`https://zoom.us/oauth/token`, data, {
         headers: {
           Authorization: basicAuthHeader,
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       })
-
-      return response.data
+      
+      // Aguardando a conclusão da requisição e obtendo os dados da resposta
+      return (await lastValueFrom(response)).data
 
     } catch (error) {
-      console.error("Error from zoom api:", error.response ? error.response.data : error.message);
+      console.error("Erro da API do Zoom:", error.response ? error.response.data : error.message);
 
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
