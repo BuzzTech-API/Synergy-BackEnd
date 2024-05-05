@@ -48,7 +48,7 @@ export class ReservationsController {
     @Body() createReservationsDto: CreateHibridReservationsDto,
     @Req() req,
   ) {
-    return this.reservationsService.createVirtualRoomReservation(
+    return this.reservationsService.createHibridReservation(
       createReservationsDto,
       req.user,
     )
