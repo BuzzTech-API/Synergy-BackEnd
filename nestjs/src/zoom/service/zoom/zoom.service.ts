@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { HttpService } from '@nestjs/axios';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-
 
 
 // garantir a Chamada do .env
@@ -12,12 +12,12 @@ export class ZoomService {
 
   constructor(
     private readonly configService: ConfigService,
+    private readonly httpService: HttpService
   ) { }
 
   private clientId: string = this.configService.get<string>('CLIENT_ID')
   private clientSecret: string = this.configService.get<string>('CLIENT_SECRET')
   private redirectUri: string = this.configService.get<string>('REDIRECT_URI')
-
 
 
   async createMeeting(token: string, topic: string, start_time: string, duration: number, agenda: string, meeting_invitees: string[]) {
@@ -68,20 +68,28 @@ export class ZoomService {
 
   async getToken(code: string) {
     try {
-      const response = await axios.post('https://zoom.us/oauth/token', null, {
-        params: {
-          grant_type: 'authorization_code',
-          code: code,
-          redirect_uri: this.redirectUri
-        },
+      const credentials = `${this.clientId}:${this.clientSecret}`
+      const encodedCredentials = Buffer.from(credentials).toString('base64');
+      const basicAuthHeader = `Basic ${encodedCredentials}`;
+
+      const data = {
+        code: code,
+        grant_type: 'authorization_code',
+        redirect_uri: this.redirectUri
+      }
+    
+      const response = await axios.post(`https://zoom.us/oauth/token`, data, {
         headers: {
-          'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+          Authorization: basicAuthHeader,
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       })
 
-      return response
+      return response.data
+
     } catch (error) {
+      console.error("Error from zoom api:", error.response ? error.response.data : error.message);
+
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
         error: error.message,
