@@ -92,7 +92,14 @@ export class PhysicalroomsService {
 
   getPhysicalrooms() {
     try {
-      const physicalRooms = this.physicalroomsRepository.find()
+      const metadata = this.physicalroomsRepository.metadata // pega as informações da entidade
+      const relations = metadata.relations.map(relation => relation.propertyName) // pega o nome de todas as relações
+
+
+      const physicalRooms = this.physicalroomsRepository.find({
+        relations: relations,
+      })
+      
       if (!physicalRooms) {
         throw new NotFoundException("Salas não encontradas")
       }

@@ -1,4 +1,13 @@
-import { Body, Controller, Header, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Header,
+    HttpCode,
+    HttpException,
+    HttpStatus,
+    Post,
+} from '@nestjs/common';
 import { CreateVirtualRoomDto } from 'src/common/dtos/CreateVirtualRoom.dto';
 import { VirtualroomsService } from 'src/models/virtualrooms/service/virtualrooms/virtualrooms.service';
 
@@ -9,8 +18,20 @@ export class VirtualroomsController {
     @Post()
     @HttpCode(201)
     @Header('Content-Type', 'application/json')
-    async createVirtualRoom(@Body() createVirtualRoomDto: CreateVirtualRoomDto) {
-        const newVirtualRoom = await this.virtualRoomService.createVirtualRoom(createVirtualRoomDto);
-        return newVirtualRoom
+    async createVirtualRoom(
+        @Body() createVirtualRoomDto: CreateVirtualRoomDto,
+    ) {
+        const newVirtualRoom =
+            await this.virtualRoomService.createVirtualRoom(
+                createVirtualRoomDto,
+            );
+        return newVirtualRoom;
+    }
+
+    @HttpCode(200)
+    @Get()
+    async getVirtualRooms() {
+        const virtualRooms = await this.virtualRoomService.getVirtualRooms();
+        return virtualRooms;
     }
 }

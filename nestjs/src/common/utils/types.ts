@@ -30,6 +30,14 @@ export type CreateReservationsVirtualParams = {
     virtual_room_id: number
 }
 
+export type CreateReservationsHibridParams = {
+    reserve_date: Date
+    reserve_start: Date
+    reserve_end: Date
+    virtual_room_id: number
+    physical_room_id: number
+}
+
 export class CreatePhysicalroomParams {
     physical_room_name: string
     physical_room_vacancies: number
@@ -71,7 +79,16 @@ export type User = {
 export type SendEmail = {
     recipients: Address[] // pessaos que vão receber o email
     subject: string // conteudo  da linha de assunto do email
-    html: string 
+    html: string
     text?: string
+}
 
+export type CreateMeeting = {
+    access_token: string
+    refresh_token: string
+    topic: string
+    start_time: string
+    duration: number
+    agenda: string
+    meeting_invites: string[]
 }
