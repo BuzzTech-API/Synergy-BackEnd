@@ -1,6 +1,6 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CreateMeetingParams, CreateParticipateParams, CreatePresenceParams } from 'src/common/utils/types'
+import { CreateMeetingParams, CreateParticipateParams, CreatePresenceParams, User } from 'src/common/utils/types'
 import { Guests } from 'src/entities/guests.entity'
 import { Meetings } from 'src/entities/meetings.entity'
 import { Participate } from 'src/entities/participate.entity'
@@ -88,7 +88,7 @@ export class MeetingsService {
 
       // Cria uma nova participação para cada usuário na reunião
       const participatePromises = users_list.map(async (user_id) => {
-        const participate = { meeting_id: meeting_id, user_id: user_id, user_status: "" }
+        const participate = { meeting_id: meeting_id, user_id: user_id, user_status: "Presente" }
         return this.participateRepository.save(this.participateRepository.create(participate))
       })
 
@@ -96,6 +96,34 @@ export class MeetingsService {
     } catch (error) {
       if (error instanceof NotFoundException || error instanceof BadRequestException) {
         throw error
+      } else {
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+        }, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
+    }
+  }
+
+  async updateParticipate(userDetails: User) {
+    try {
+      const participate = await this.participateRepository.findOne({ where: { user_id: userDetails.user_id } })
+      if (!participate) {
+        throw new NotFoundException('A relação não existe.')
+      }
+
+      participate.user_status = "Recusado"
+
+      return await this.participateRepository.save(participate)
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: error.message,
+          },
+          HttpStatus.NOT_FOUND,
+        )
       } else {
         throw new HttpException({
           status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -137,7 +165,7 @@ export class MeetingsService {
 
       // Cria uma nova participação para cada usuário na reunião
       const presencePromises = guests_list.map(async (guest_id) => {
-        const presence = { meeting_id: meeting_id, guest_id: guest_id, guest_status: "" }
+        const presence = { meeting_id: meeting_id, guest_id: guest_id, guest_status: "Presente" }
         return this.presenceRepository.save(this.presenceRepository.create(presence))
 
       })
