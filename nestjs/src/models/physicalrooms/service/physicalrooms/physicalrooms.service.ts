@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePhysicalroomParams } from 'src/common/utils/types';
+import { CreatePhysicalroomParams, UpdatePhysicalroomParams } from 'src/common/utils/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhysicalRooms } from 'src/entities/physicalrooms.enity';
 import { Repository } from 'typeorm';
@@ -87,9 +87,6 @@ export class PhysicalroomsService {
     }
   }
 
-
-
-
   getPhysicalrooms() {
     try {
       const metadata = this.physicalroomsRepository.metadata // pega as informações da entidade
@@ -99,7 +96,7 @@ export class PhysicalroomsService {
       const physicalRooms = this.physicalroomsRepository.find({
         relations: relations,
       })
-      
+
       if (!physicalRooms) {
         throw new NotFoundException("Salas não encontradas")
       }
@@ -117,6 +114,78 @@ export class PhysicalroomsService {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           error: error.message,
         }, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  async deletePhysicalRoom(physical_room_id: number) {
+    try {
+      // Tenta encontrar a sala física no repositório pelo ID fornecido
+      const physicalRoom = await this.physicalroomsRepository.findOne({ where: { physical_room_id: physical_room_id } })
+
+      // Se a sala não for encontrada, lança uma exceção informando que a sala não foi encontrada
+      if (!physicalRoom) {
+        throw new NotFoundException("Sala não encontrada")
+      }
+
+      // Marca a sala como inativa (delete logico)
+      physicalRoom.is_active = false
+
+      // Salva a sala atualizada no repositório e retorna o resultado
+      return await this.physicalroomsRepository.save(physicalRoom)
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException({
+          status: HttpStatus.NOT_FOUND,
+          error: error.message,
+        }, HttpStatus.NOT_FOUND);
+      }
+      else
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+        }, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  async updatePhysicalRoom(physicalroomDetails: UpdatePhysicalroomParams) {
+    const {
+      physical_room_id,
+      physical_room_address,
+      physical_room_name,
+      physical_room_permission_level,
+      physical_room_vacancies
+    } = physicalroomDetails
+
+    try {
+      const physicalRoom = await this.physicalroomsRepository.findOne({ where: { physical_room_id: physical_room_id } })
+
+      if (!physicalRoom) {
+        throw new NotFoundException('O id da sala não existe.')
+      }
+
+      // Atualiza os campos da sala com os novos valores fornecidos
+      physicalRoom.physical_room_address = physical_room_address
+      physicalRoom.physical_room_name = physical_room_name
+      physicalRoom.physical_room_permission_level = physical_room_permission_level
+      physicalRoom.physical_room_vacancies = physical_room_vacancies
+
+      // Salva a sala atualizada no repositório e retorna o resultado
+      return await this.physicalroomsRepository.save(physicalRoom)
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: error.message,
+          },
+          HttpStatus.NOT_FOUND,
+        )
+      } else {
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+        }, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
     }
   }
 }

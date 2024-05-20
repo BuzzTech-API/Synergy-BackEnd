@@ -45,6 +45,14 @@ export class CreatePhysicalroomParams {
     physical_room_permission_level: number
 }
 
+export class UpdatePhysicalroomParams {
+    physical_room_id: number
+    physical_room_name: string
+    physical_room_vacancies: number
+    physical_room_address: string
+    physical_room_permission_level: number
+}
+
 export type CreateMeetingParams = {
     meeting_title: string
     meeting_subject: string
