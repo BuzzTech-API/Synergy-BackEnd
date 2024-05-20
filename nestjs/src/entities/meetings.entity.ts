@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Participate } from './participate.entity';
 import { Reservations } from './reservations.entity';
 
@@ -17,9 +17,9 @@ export class Meetings {
   meeting_type: string;
 
   @OneToMany(() => Participate, participate => participate.meetings)
-  participate: Participate[]
+  participate: Participate[];
 
   @ManyToOne(() => Reservations, reservations => reservations.meeting)
   @JoinColumn({ name: "reserve_id"})
-  reservations: Reservations
+  reservations: Reservations;
 }

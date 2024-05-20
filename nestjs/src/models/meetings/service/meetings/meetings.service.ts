@@ -182,4 +182,11 @@ export class MeetingsService {
       }
     }
   }
+
+  async removeMeeting(meeting_id:number){
+
+    const meeting = await this.meetingsRepository.findOneBy({ meeting_id });
+    if (!meeting) return null;
+    return this.meetingsRepository.remove(meeting);
+  }
 }

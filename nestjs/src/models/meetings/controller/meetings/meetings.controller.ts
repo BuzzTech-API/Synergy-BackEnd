@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Delete, HttpCode, NotFoundException, Param, Post, Put, Req } from '@nestjs/common';
 import { MeetingsService } from '../../service/meetings/meetings.service';
 import { CreateMeetingDto } from 'src/common/dtos/CreateMeeting.dto';
 import { CreateParticipateDto } from 'src/common/dtos/CreateParticipate.dto';
@@ -41,5 +41,11 @@ export class MeetingsController {
   ) {
     const presence = await this.meetingsService.updateParticipate(req.user)
     return presence
+  }
+
+  @HttpCode(204)
+  @Delete('/deleteMeeting/:meeting_id')
+  async deleteMeeting(@Param('meeting_id') meeting_id: number) {
+    await this.meetingsService.removeMeeting(meeting_id);
   }
 }
