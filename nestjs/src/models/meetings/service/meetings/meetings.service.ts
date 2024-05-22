@@ -183,10 +183,26 @@ export class MeetingsService {
     }
   }
 
-  async removeMeeting(meeting_id:number){
-
-    const meeting = await this.meetingsRepository.findOneBy({ meeting_id });
-    if (!meeting) return null;
-    return this.meetingsRepository.remove(meeting);
+  async removeMeeting(meeting_id: number) {
+    try {
+      const meeting = await this.meetingsRepository.findOneBy({ meeting_id });
+      if (!meeting) throw new NotFoundException('A relação não existe.');
+      return this.meetingsRepository.remove(meeting);
+    }catch (error){
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: error.message,
+          },
+          HttpStatus.NOT_FOUND,
+        )
+      } else {
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+        }, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
+    }
   }
 }

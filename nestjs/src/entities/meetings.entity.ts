@@ -19,7 +19,7 @@ export class Meetings {
   @OneToMany(() => Participate, participate => participate.meetings)
   participate: Participate[];
 
-  @ManyToOne(() => Reservations, reservations => reservations.meeting)
+  @ManyToOne(() => Reservations, reservations => reservations.meeting, { onDelete: 'CASCADE' })
   @JoinColumn({ name: "reserve_id"})
   reservations: Reservations;
 }
