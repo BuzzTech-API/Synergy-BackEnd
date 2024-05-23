@@ -38,7 +38,7 @@ import { ZoomModule } from './zoom/zoom.module';
       password: 'Senha123#',
       database: 'api',
       entities: [Users, PhysicalRooms, Participate, Meetings, Guests, Reservations, VirtualRooms, Presence],
-      synchronize: false,
+      synchronize: true,
       autoLoadEntities: true,
     }),
     UsersModule,

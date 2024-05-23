@@ -100,3 +100,10 @@ export type CreateMeeting = {
     agenda: string
     meeting_invites: string[]
 }
+
+export class UpdateVirtualroomParams {
+    virtual_room_id: number
+    virtual_room_name: string
+    virtual_room_link: string
+    virtual_room_permission_level: number
+}
