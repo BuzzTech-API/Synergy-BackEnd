@@ -4,11 +4,13 @@ import {
     Get,
     Header,
     HttpCode,
-    HttpException,
-    HttpStatus,
+    Param,
+    ParseIntPipe,
     Post,
+    Put,
 } from '@nestjs/common';
 import { CreateVirtualRoomDto } from 'src/common/dtos/CreateVirtualRoom.dto';
+import { UpdateVirtualRoomDto } from 'src/common/dtos/UpdateVirtualroom.dto';
 import { VirtualroomsService } from 'src/models/virtualrooms/service/virtualrooms/virtualrooms.service';
 
 @Controller('virtualrooms')
@@ -34,4 +36,19 @@ export class VirtualroomsController {
         const virtualRooms = await this.virtualRoomService.getVirtualRooms();
         return virtualRooms;
     }
+
+    @HttpCode(200)
+    @Put(':id')
+    async deleteVirtualRoom(@Param('id', ParseIntPipe) id: number) {
+        const virtualroom = await this.virtualRoomService.deleteVirtualRoom(id)
+        return virtualroom
+    }
+    
+    @HttpCode(200)
+    @Put()
+    async updateVirtualRoom(@Body() updateVirtualroomDto: UpdateVirtualRoomDto) {
+        const Virtualroom = await this.virtualRoomService.updateVirtualRoom(updateVirtualroomDto)
+        return Virtualroom
+    }
 }
+
