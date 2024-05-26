@@ -22,6 +22,7 @@ import { GuestsModule } from './models/guests/guests.module';
 import { MailerModule } from './mailer/mailer.module';
 import { ConfigModule } from '@nestjs/config';
 import { ZoomModule } from './zoom/zoom.module';
+import { DocxModule } from './docx/docx.module';
 
 
 @Module({
@@ -50,6 +51,7 @@ import { ZoomModule } from './zoom/zoom.module';
     GuestsModule,
     MailerModule,
     ZoomModule,
+    DocxModule,
   ],
   controllers: [AppController],
   providers: [AppService, {

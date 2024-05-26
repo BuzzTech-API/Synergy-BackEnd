@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer'
-import Mail from 'nodemailer/lib/mailer';
+import Mail, { Attachment } from 'nodemailer/lib/mailer';
 import { SendEmail } from 'src/common/utils/types';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class MailerService {
             const transporter = nodemailer.createTransport({ // Configurações do servidor de email
                 host: this.configService.get<string>('MAIL_HOST'), // Obtém o host do servidor de email
                 port: this.configService.get<number>('MAIL_PORT'), // Obtém a porta do servidor de email
-                secure: false, // Define se a conexão deve ser segura. Aqui, estamos usando `false` para todas as portas, exceto 465 (que seria `true`)
+                secure: true, // Define se a conexão deve ser segura. Aqui, estamos usando `false` para todas as portas, exceto 465 (que seria `true`)
                 auth: {
                     // Configurações de autenticação do servidor de email
                     user: this.configService.get<string>('MAIL_USER'),
@@ -47,6 +47,32 @@ export class MailerService {
             const result = await info.sendMail(options)
             return result
         } catch (error) {
+            console.error('Erro ao enviar email:', error.response ? error.response.data : error.message);
+            throw new BadRequestException(error)
+        }
+    }
+
+    async sendEmailWithAttachment(emailDetails: SendEmail, attachment: Attachment) {
+        let info = this.mailTransport() // Chama a função mailTransport para obter o transporte de email configurado
+
+        const options: Mail.Options = { // Configura as opções para o email a ser enviado
+            from: { 
+                name: this.configService.get<string>('DAFAULT_MAIL_SENDER'), // Define o nome do remetente
+                address: this.configService.get<string>('DEFAULT_MAIL_FROM'), // Define o endereço de email do remetente
+            },
+            to: emailDetails.recipients, // Define os destinatários do email com base nas informações fornecidas
+            subject: emailDetails.subject, // Define o assunto do email
+            html: emailDetails.html, // Define o corpo HTML do email
+            text: emailDetails.text, // Este é o conteúdo do email em formato de texto simples
+            attachments: [attachment]
+            
+        }   
+
+        try {
+            const result = await info.sendMail(options)
+            return result
+        } catch (error) {
+            console.error('Erro ao enviar email:', error.response ? error.response.data : error.message);
             throw new BadRequestException(error)
         }
     }
