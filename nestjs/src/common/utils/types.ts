@@ -1,5 +1,5 @@
 import { Address } from "nodemailer/lib/mailer"
-import { Meetings } from "src/entities/meetings.entity"
+
 
 export class CreateUserParams { // Modelo de dados final que vai ser enviado para o banco de dados
     user_name: string
@@ -106,4 +106,13 @@ export class UpdateVirtualroomParams {
     virtual_room_name: string
     virtual_room_link: string
     virtual_room_permission_level: number
+}
+
+export type populateAta = {
+    assunto: string
+    data: string
+    horario: string
+    local: string
+    relator: string
+    participantes: Address[]
 }
