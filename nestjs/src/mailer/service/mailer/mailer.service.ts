@@ -15,7 +15,7 @@ export class MailerService {
             const transporter = nodemailer.createTransport({ // Configurações do servidor de email
                 host: this.configService.get<string>('MAIL_HOST'), // Obtém o host do servidor de email
                 port: this.configService.get<number>('MAIL_PORT'), // Obtém a porta do servidor de email
-                secure: false, // Define se a conexão deve ser segura. Aqui, estamos usando `false` para todas as portas, exceto 465 (que seria `true`)
+                secure: true, // Define se a conexão deve ser segura. Aqui, estamos usando `false` para todas as portas, exceto 465 (que seria `true`)
                 auth: {
                     // Configurações de autenticação do servidor de email
                     user: this.configService.get<string>('MAIL_USER'),

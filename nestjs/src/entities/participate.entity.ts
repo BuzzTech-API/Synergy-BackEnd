@@ -19,7 +19,7 @@ export class Participate {
     @JoinColumn({ name: 'user_id' })
     user: Users;
 
-    @ManyToOne(() => Meetings, meetings => meetings.participate)
+    @ManyToOne(() => Meetings, meetings => meetings.participate, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'meeting_id' })
     meetings: Meetings;
 

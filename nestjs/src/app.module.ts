@@ -31,8 +31,8 @@ import { ZoomModule } from './zoom/zoom.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      // host: 'localhost', //Pra quem n roda o docker
-      host: 'db',
+      host: 'localhost', //Pra quem n roda o docker
+      // host: 'db',
       port: 3306,
       username: 'Syatt',
       password: 'Senha123#',
