@@ -43,15 +43,23 @@ export class MeetingsController {
     return presence
   }
 
-  @HttpCode(204)
-  @Delete('/deleteMeeting/:meeting_id')
-  async deleteMeeting(@Param('meeting_id') meeting_id: number) {
-    await this.meetingsService.removeMeeting(meeting_id);
-  }
-
   @HttpCode(200)
   @Get('/participate/:meeting_id')
   async getPaticipate(@Param('meeting_id') meeting_id: number) {
     return await this.meetingsService.getParticipateMeeting(meeting_id);
+  }
+
+  @HttpCode(200)
+  @Get()
+  async getMeeting() {
+    const meetings = await this.meetingsService.getMeetings();
+    return meetings;
+  }
+
+  @HttpCode(200)
+  @Get()
+  async getMeetingById() {
+    const meetings = await this.meetingsService.getMeetings();
+    return meetings;
   }
 }

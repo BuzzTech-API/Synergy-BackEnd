@@ -109,16 +109,16 @@ export class MeetingsService {
     try {
       const metadata = this.participateRepository.metadata; // Pega as informações da entidade
       const relations = metadata.relations.map(relation => relation.propertyName); // Pega o nome de todas as relações
-  
+
       const participacoes = await this.participateRepository.find({
         where: { meeting_id: reuniaoId },
         relations: relations,
       });
-  
+
       if (participacoes.length === 0) {
         throw new NotFoundException('Participações não encontradas');
       }
-  
+
       return participacoes
 
     } catch (error) {
@@ -135,7 +135,37 @@ export class MeetingsService {
       }
     }
   }
-  
+
+  async getMeetings() {
+    try {
+      const metadata = this.meetingsRepository.metadata // pega as informações da entidade
+      const relations = metadata.relations.map(relation => relation.propertyName) // pega o nome de todas as relações
+
+
+      const physicalRooms = this.meetingsRepository.find({
+        relations: relations,
+      })
+      
+      if (!physicalRooms) {
+        throw new NotFoundException("Salas não encontradas")
+      }
+
+      return physicalRooms
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException({
+          status: HttpStatus.NOT_FOUND,
+          error: error.message,
+        }, HttpStatus.NOT_FOUND);
+      }
+      else
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+        }, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
 
   async updateParticipate(userDetails: User) {
     try {
@@ -215,26 +245,4 @@ export class MeetingsService {
     }
   }
 
-  async removeMeeting(meeting_id: number) {
-    try {
-      const meeting = await this.meetingsRepository.findOneBy({ meeting_id });
-      if (!meeting) throw new NotFoundException('A relação não existe.');
-      return this.meetingsRepository.remove(meeting);
-    }catch (error){
-      if (error instanceof NotFoundException) {
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: error.message,
-          },
-          HttpStatus.NOT_FOUND,
-        )
-      } else {
-        throw new HttpException({
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: error.message,
-        }, HttpStatus.INTERNAL_SERVER_ERROR)
-      }
-    }
-  }
 }

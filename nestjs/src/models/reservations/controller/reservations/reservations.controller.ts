@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Req } from '@nestjs/common';
 import {
   CreateHibridReservationsDto,
   CreateReservationsDto,
@@ -12,9 +12,22 @@ export class ReservationsController {
 
   @HttpCode(200)
   @Get()
-  async getReservarions() {
+  async getReservaions() {
     const reservations = await this.reservationsService.getReservation();
     return reservations;
+  }
+
+  @HttpCode(200)
+  @Get('/:id')
+  async getReservationById(@Param('id') reservation_id: number) {
+    const reservation = await this.reservationsService.getReservationById(reservation_id);
+    return reservation;
+  }
+
+  @HttpCode(200)
+  @Delete('/:id')
+  async deleteReservation(@Param('id') reservation_id: number) {
+    await this.reservationsService.deleteReservation(reservation_id);
   }
 
   @HttpCode(201)
