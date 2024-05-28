@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Header, HttpCode, HttpException, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Header, HttpCode, HttpException, HttpStatus, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { CreateUserDto } from 'src/common/dtos/CreateUser.dto';
 import { Public } from 'src/common/utils/constants';
 import { UsersService } from 'src/models/users/services/users/users.service';
@@ -26,6 +26,13 @@ export class UsersController {
     @HttpCode(200)
     async getUserById(@Param('id', ParseIntPipe) id: number) { // usa os id da rota (ParseIntPipe): garante que o id é um numero
         const user = await this.userService.getUserById(id)
+        return user
+    }
+
+    @HttpCode(200)
+    @Put(':id')
+    async deleteUser(@Param('id', ParseIntPipe) id: number) {
+        const user = await this.userService.deleteUser(id)
         return user
     }
 
