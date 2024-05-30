@@ -56,6 +56,31 @@ export class ReservationsService {
     }
   }
 
+  async deleteReservation(reserve_id: number) {
+    try {
+
+      const reserve = await this.reservationsRepository.findOneBy({ reserve_id });
+      if (!reserve) throw new NotFoundException('A relação não existe.');
+      await this.reservationsRepository.remove(reserve);
+
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: error.message,
+          },
+          HttpStatus.NOT_FOUND,
+        )
+      } else {
+        throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+        }, HttpStatus.INTERNAL_SERVER_ERROR)
+      }
+    }
+  }
+
   async createPhysicalRoomReservation(
     reservationsDetails: CreateReservationsParams,
     user: User,

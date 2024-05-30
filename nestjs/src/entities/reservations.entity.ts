@@ -25,11 +25,11 @@ export class Reservations {
   @OneToOne(() => Meetings, meetings => meetings.meeting_id)
   meeting: Meetings
 
-  @ManyToOne(() => VirtualRooms, vroom => vroom.reservation, { nullable: true })
+  @ManyToOne(() => VirtualRooms, vroom => vroom.reservation, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: "virtual_room_id" })
   virtualroom: VirtualRooms | null
 
-  @ManyToOne(() => PhysicalRooms, proom => proom.reservation, { nullable: true })
+  @ManyToOne(() => PhysicalRooms, proom => proom.reservation, { nullable: true, onDelete: 'CASCADE'  })
   @JoinColumn({ name: "physical_room_id" })
   physicalroom: PhysicalRooms | null
 }

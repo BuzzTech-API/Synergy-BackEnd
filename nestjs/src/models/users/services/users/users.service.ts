@@ -128,6 +128,36 @@ export class UsersService {
         }
     }
 
+    async deleteUser(user_id: number) {
+        try {
+          // Tenta encontrar a sala física no repositório pelo ID fornecido
+          const user = await this.userRepository.findOne({ where: { user_id: user_id } })
+    
+          // Se a sala não for encontrada, lança uma exceção informando que a sala não foi encontrada
+          if (!user) {
+            throw new NotFoundException("Usuario não encontrada")
+          }
+    
+          // Marca a sala como inativa (delete logico)
+          user.is_active = false
+    
+          // Salva a sala atualizada no repositório e retorna o resultado
+          return await this.userRepository.save(user)
+        } catch (error) {
+          if (error instanceof NotFoundException) {
+            throw new HttpException({
+              status: HttpStatus.NOT_FOUND,
+              error: error.message,
+            }, HttpStatus.NOT_FOUND);
+          }
+          else
+            throw new HttpException({
+              status: HttpStatus.INTERNAL_SERVER_ERROR,
+              error: error.message,
+            }, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+      }
+
     async create_admin() {
         const existingUser = await this.userRepository.findOne({ where: { user_email: 'adm@adm.com' } })
         if (!existingUser) {
