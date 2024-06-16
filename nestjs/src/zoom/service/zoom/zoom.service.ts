@@ -130,7 +130,7 @@ export class ZoomService {
       // Parametros da rota
       const data = {
         code: code,
-        grant_type: 'authorization_code',
+        grant_type: 'client_credentials',
         redirect_uri: this.redirectUri
       }
 
