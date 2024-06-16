@@ -1,25 +1,26 @@
-import { IsNotEmpty, IsString, Max, MaxLength, Min } from "class-validator"
+import { IsNotEmpty, IsString, Max, MaxLength, Min } from 'class-validator';
 
-export class UpdatePhysicalroomDto{
-    @IsNotEmpty()
-    @Min(1)
-    physical_room_id: number
+export class UpdatePhysicalroomDto {
+  @IsNotEmpty()
+  @Min(1)
+  physical_room_id: number;
 
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(80)
-    physical_room_name: string
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(80)
+  physical_room_name: string;
 
-    @IsNotEmpty()
-    @Min(1)
-    physical_room_vacancies: number
+  @IsNotEmpty()
+  @Min(1)
+  physical_room_vacancies: number;
 
-    @IsString()
-    @IsNotEmpty()
-    physical_room_address: string
+  @IsString()
+  @IsNotEmpty()
+  physical_room_address: string;
 
-    @IsNotEmpty()
-    @Min(1)
-    @Max(3)
-    physical_room_permission_level: number
+  @IsNotEmpty()
+  @Min(1)
+  @Max(3)
+  physical_room_permission_level: number;
 }
+
