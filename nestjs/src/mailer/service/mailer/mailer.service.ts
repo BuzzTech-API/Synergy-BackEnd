@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer'
 import Mail, { Attachment } from 'nodemailer/lib/mailer';
+import { SendEmailDto } from 'src/common/dtos/SendEmail.dto';
 import { SendEmail } from 'src/common/utils/types';
 
 @Injectable()
@@ -52,7 +53,7 @@ export class MailerService {
         }
     }
 
-    async sendEmailWithAttachment(emailDetails: SendEmail, attachment: Attachment) {
+    async sendEmailWithAttachment(emailDetails: SendEmailDto, attachment: Attachment) {
         let info = this.mailTransport() // Chama a função mailTransport para obter o transporte de email configurado
 
         const options: Mail.Options = { // Configura as opções para o email a ser enviado
@@ -73,6 +74,33 @@ export class MailerService {
             return result
         } catch (error) {
             console.error('Erro ao enviar email:', error.response ? error.response.data : error.message);
+            throw new BadRequestException(error)
+        }
+    }
+
+    async scheduleEmail(emailDetails: SendEmail, time: string){
+
+        let info = this.mailTransport()
+        const schedule = require('node-schedule');
+        
+        const options: Mail.Options = { // Configura as opções para o email a ser enviado
+            from: { 
+                name: this.configService.get<string>('DAFAULT_MAIL_SENDER'), // Define o nome do remetente
+                address: this.configService.get<string>('DEFAULT_MAIL_FROM'), // Define o endereço de email do remetente
+            },
+            to: emailDetails.recipients, 
+            subject: emailDetails.subject, 
+            html: emailDetails.html, 
+            text: emailDetails.text,
+        }   
+
+        try {
+            console.log(time)
+            const job = schedule.scheduleJob(time, info.sendMail(options))
+            return job 
+
+        } catch (error) {
+            console.error('Erro ao enviar email (Schedule):', error.response ? error.response.data : error.message);
             throw new BadRequestException(error)
         }
     }

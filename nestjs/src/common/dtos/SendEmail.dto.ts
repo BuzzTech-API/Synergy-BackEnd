@@ -25,4 +25,14 @@ export class SendEmailDto {
     html: string
 
     text?: string
+
+}
+
+export class ScheduleEmailDto {
+
+    @IsNotEmpty()
+    date: string;
+
+    @IsNotEmpty()
+    mailOptions: SendEmailDto
 }
