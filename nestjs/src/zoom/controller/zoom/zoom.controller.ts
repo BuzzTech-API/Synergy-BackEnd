@@ -1,5 +1,4 @@
 import { Controller, Query, Post, HttpCode, Param, Body } from '@nestjs/common';
-import { CreateMeetingDto } from 'src/common/dtos/CreateMeeting.dto';
 import { zoomMeetinhCreateDto } from 'src/common/dtos/Zoom.dto';
 import { ZoomService } from 'src/zoom/service/zoom/zoom.service';
 
