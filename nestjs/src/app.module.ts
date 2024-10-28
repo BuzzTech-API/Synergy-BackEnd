@@ -32,11 +32,10 @@ import { DocxModule } from './docx/docx.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      // host: 'localhost', //Pra quem n roda o docker
-      host: 'db',
-      port: 3306,
-      username: 'Syatt',
-      password: 'Senha123#',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT, 10),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
       database: 'api',
       entities: [Users, PhysicalRooms, Participate, Meetings, Guests, Reservations, VirtualRooms, Presence],
       synchronize: true,
